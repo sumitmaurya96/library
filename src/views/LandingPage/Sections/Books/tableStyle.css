@@ -1,0 +1,10 @@
+#myTable {
+  background-color: inherit;
+  text-align: center;
+}
+
+#myTable ul {
+  list-style-type: none;
+  padding-left: 0;
+  line-height: 1.7;
+}

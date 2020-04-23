@@ -1,0 +1,29 @@
+.login-form-control {
+  background-color: transparent;
+  border: 0px;
+  border-bottom: 1px solid #17a2b8;
+  border-radius: 0em;
+  outline: none;
+  box-shadow: 0em;
+}
+
+.login-form-control:focus {
+  background-color: transparent;
+  border-bottom: 1px solid #17a2b8;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.login-form-check-input {
+  height: 20px;
+  width: 20px;
+  padding-left: 1em;
+}
+
+.login-form-check-label {
+  padding-left: 0.5em;
+}
+
+.login-form {
+  max-width: 20em;
+}

@@ -1,0 +1,17 @@
+#carouselCaption {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#carouselCaption h1 {
+  font-size: 5vw;
+  text-shadow: 2px 2px #000000;
+}
+
+#carouselCaption p {
+  font-size: 2vw;
+}
+
+.jumbo {
+  margin-bottom: 0em;
+}
