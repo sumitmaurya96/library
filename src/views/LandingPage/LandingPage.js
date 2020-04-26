@@ -5,7 +5,7 @@ import Footer from "views/Components/Footer/Footer";
 
 //Sections
 import Carousel from "./Sections/Carousel/Carousel";
-import BooksTable from "./Sections/Books/Table";
+import TrendingBooksSection from "./Sections/Books/TrendingBooksSection";
 import Navigation from "./Sections/Navigation/Navigation";
 
 //CSS
@@ -18,6 +18,9 @@ import { FaBook } from "react-icons/fa";
 import Slide1 from "assets/img/slideshow/slide4.1.jpg";
 import Slide2 from "assets/img/slideshow/slide5.1.jpg";
 import Slide3 from "assets/img/slideshow/slide6.1.jpg";
+
+//Database
+import trendingBooks from "views/virtualDB/books/trendingBooks";
 
 const LandingPage = (props) => {
   const slideData = [
@@ -47,6 +50,26 @@ const LandingPage = (props) => {
     },
   ];
 
+  const handleNavigationButtonClick = (buttonName) => {
+    if ("askLibrarian".localeCompare(buttonName) === 0) {
+      props.history.push({
+        pathname: "/ask",
+      });
+    }
+    if ("timing".localeCompare(buttonName) === 0) {
+      props.history.push({
+        pathname: "/about",
+        search: buttonName,
+      });
+    }
+    if ("services".localeCompare(buttonName) === 0) {
+      props.history.push({
+        pathname: "/services",
+        search: buttonName,
+      });
+    }
+  };
+
   return (
     <div>
       <Navbar {...props} />
@@ -68,9 +91,9 @@ const LandingPage = (props) => {
             Welcome to Jadavpur University Library
           </p>
         </div>
-        <Navigation />
+        <Navigation handleNavigationClick={handleNavigationButtonClick} />
         <hr className="hr-text py-5" data-content="Trending Books" />
-        <BooksTable />
+        <TrendingBooksSection trendingBooks={trendingBooks} {...props} />
       </div>
       <Footer />
     </div>

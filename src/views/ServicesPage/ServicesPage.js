@@ -1,7 +1,5 @@
 import React from "react";
 
-import Button from "react-bootstrap/Button";
-
 import Navbar from "views/Components/Navbar/Navbar";
 import Footer from "views/Components/Footer/Footer";
 
@@ -67,14 +65,13 @@ const ServicesPage = (props) => {
           </p>
 
           <div style={{ textAlign: "center" }}>
-            <Button
-              variant="primary"
-              size="lg"
+            <button
+              className="btn btn-sm"
               target="_blank"
               href="http://www.jaduniv.edu.in/templates/newpages/library.html"
             >
               Know more
-            </Button>
+            </button>
           </div>
         </section>
       </div>

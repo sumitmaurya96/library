@@ -1,114 +1,223 @@
 import React from "react";
-//import "./bookList.css";
 
-//react-scroll
-import * as Scroll from "react-scroll";
-import {
-  Link,
-  Element,
-  Events,
-  animateScroll as scroll,
-  scrollSpy,
-  scroller,
-} from "react-scroll";
+import Pagination from "./Pagination";
 
-//Icons
-import { MdKeyboardArrowLeft } from "react-icons/md";
-import { MdKeyboardArrowRight } from "react-icons/md";
+//CSS
+import "./bookList.css";
 
-//sections
+//icons
+import { FiBookOpen, FiBook } from "react-icons/fi";
+import { GiBlackBook, GiEvilBook } from "react-icons/gi";
+import { AiOutlineBook } from "react-icons/ai";
+
+// Componnet
 import Book from "./Book";
 
 const BookList = (props) => {
-  const bookData = {
-    ISBN: "2345",
-    Title: "BBC Dune",
-    Type: "Story",
-    Authors: "Frank Herbert",
-    Copies: 40,
+  const categories = {
+    Magazines: "Magazines",
+    Journals: "Journals",
+    Departmental: "Departmental",
+    Story: "Story",
+    Others: "Others",
   };
 
-  const [views, setViews] = React.useState({ sroll: 0 });
-  const myRef = React.createRef();
+  const [books, setBooks] = React.useState({
+    booksData: [],
+    totalPages: 0,
+    category: categories.Magazines,
+  });
 
-  const scrollList = (arg) => {
-    const toScroll = Math.floor((myRef.current.offsetWidth * 5) / 6);
-    const maxScrollWidth =
-      myRef.current.scrollWidth - myRef.current.offsetLeft * 2 - toScroll;
+  const [currentPage, setCurrentPage] = React.useState(1);
 
-    // console.log(toScroll);
-    // console.log(maxScrollWidth);
-    // console.log(views.sroll);
-
-    if (arg === 0 && views.sroll > 0) {
-      setViews((prevState) => {
-        const Views = { ...prevState };
-        Views.sroll -= toScroll;
-        if (Views.sroll < 0) Views.sroll = 0;
-        myRef.current.scrollLeft = Views.sroll;
-        return Views;
-      });
-    } else if (arg === 1 && views.sroll < maxScrollWidth) {
-      setViews((prevState) => {
-        const Views = { ...prevState };
-        Views.sroll += toScroll;
-        if (Views.sroll > maxScrollWidth) Views.sroll = maxScrollWidth;
-        myRef.current.scrollLeft = Views.sroll;
-        return Views;
-      });
-    }
+  const handleBookCategory = (BookCategory) => {
+    setBooks((state) => {
+      const Books = { ...state };
+      Books.category = BookCategory;
+      return Books;
+    });
+    //set page to page 1
+    setCurrentBooksPage(1);
   };
+
+  const setCurrentBooksPage = (pageNumber) => {
+    setCurrentPage((state) => {
+      return pageNumber;
+    });
+  };
+
+  const onButtonClick = (details) => {
+    props.history.push({
+      pathname: "/book-details",
+      search: `isbn=${details.isbn}`,
+      state: { bookDetails: details },
+    });
+  };
+
+  const setFont = () => {
+    return 7 + (16 - 7) * ((window.innerWidth - 300) / (1600 - 300));
+  };
+
+  const fetchPageData = () => {
+    //use axios
+    const data = props.fetchPageData(currentPage, books.category);
+    setBooks((state) => {
+      const Books = { ...state };
+      if (data) {
+        Books.booksData = data.booksData;
+        Books.totalPages = data.totalPages;
+        console.log(state, currentPage);
+      }
+
+      return Books;
+    });
+  };
+
+  React.useEffect(() => {
+    fetchPageData();
+  }, [currentPage, books.category]);
 
   return (
-    <div className="jumbotron py-4" style={{ marginBottom: "0px" }}>
-      <div style={{ paddingLeft: "70px" }}>
-        <p className="h1">{props.listLabel}</p>
-      </div>
-      <div className="d-flex" style={{ marginBottom: "0px" }}>
-        <a
-          className="display-inline-block align-self-center"
-          onClick={() => {
-            scrollList(0);
-          }}
-        >
-          <MdKeyboardArrowLeft size="60px" />
-          <span className="sr-only">Previous</span>
-        </a>
-        <div
-          className="py-2 border border-secondary rounded d-flex"
-          style={{
-            overflowX: "hidden",
-            //whiteSpace: "nowrap",
-            marginBottom: "0px",
-            width: "100%",
-            // zIndex: "-1",
-            // transform: `translateX(-${views.sroll}px)`,
-            // transition: "1s",
-          }}
-          ref={myRef}
-        >
-          <Book {...bookData} />
-          <Book {...bookData} />
-          <Book {...bookData} />
-          <Book {...bookData} />
-          <Book {...bookData} />
-          <Book {...bookData} />
-          <Book {...bookData} />
-          <Book {...bookData} />
-          <Book {...bookData} />
-          <Book {...bookData} />
-          <Book {...bookData} />
-          <Book {...bookData} />
-        </div>
-        <a
-          className="display-inline-block align-self-center"
-          onClick={() => {
-            scrollList(1);
-          }}
-        >
-          <MdKeyboardArrowRight size="60px" />
-          <span className="sr-only">/Next</span>
-        </a>
+    <div className="row">
+      <div className="col-md-12 offset-md- bg-light shadow-lg">
+        <ul className="nav nav-pills d-inline-bloc p-2 rounded my-3 bg-info">
+          <li className="nav-item d-inline-block border-right">
+            <button
+              className={`btn btn-info py-3 px-2 ${
+                categories.Magazines.localeCompare(books.category) === 0
+                  ? "active"
+                  : ""
+              }`}
+              href="#"
+              style={{
+                borderRadius: "0px",
+                fontSize: `${setFont()}px`,
+              }}
+              onClick={() => {
+                handleBookCategory(categories.Magazines);
+              }}
+            >
+              <span>
+                <FiBookOpen size={`${setFont() + 7}px`} />
+                <span className="p-1">Magazines</span>
+              </span>
+            </button>
+          </li>
+          <li className="nav-item d-inline-block border-left border-right">
+            <button
+              className={`btn btn-info py-3 px-2 ${
+                categories.Journals.localeCompare(books.category) === 0
+                  ? "active"
+                  : ""
+              }`}
+              href="#"
+              style={{
+                borderRadius: "0px",
+                fontSize: `${setFont()}px`,
+              }}
+              onClick={() => {
+                handleBookCategory(categories.Journals);
+              }}
+            >
+              <span>
+                <AiOutlineBook size={`${setFont() + 7}px`} />
+                <span className="p-1">Journals</span>
+              </span>
+            </button>
+          </li>
+          <li className="nav-item d-inline-block border-left border-right">
+            <button
+              className={`btn btn-info py-3 px-2 ${
+                categories.Departmental.localeCompare(books.category) === 0
+                  ? "active"
+                  : ""
+              }`}
+              href="#"
+              style={{
+                borderRadius: "0px",
+                fontSize: `${setFont()}px`,
+              }}
+              onClick={() => {
+                handleBookCategory(categories.Departmental);
+              }}
+            >
+              <span>
+                <FiBook size={`${setFont() + 7}px`} />
+                <span className="p-1">Departmental</span>
+              </span>
+            </button>
+          </li>
+          <li className="nav-item d-inline-block border-left border-right">
+            <button
+              className={`btn btn-info py-3 px-2 ${
+                categories.Story.localeCompare(books.category) === 0
+                  ? "active"
+                  : ""
+              }`}
+              href="#"
+              style={{
+                borderRadius: "0px",
+                fontSize: `${setFont()}px`,
+              }}
+              onClick={() => {
+                handleBookCategory(categories.Story);
+              }}
+            >
+              <span>
+                <GiEvilBook size={`${setFont() + 7}px`} />
+                <span className="p-1">Story</span>
+              </span>
+            </button>
+          </li>
+
+          <li className="nav-item d-inline-block border-left">
+            <button
+              className={`btn btn-info py-3 px-2 ${
+                categories.Others.localeCompare(books.category) === 0
+                  ? "active"
+                  : ""
+              }`}
+              href="#"
+              style={{
+                borderRadius: "0px",
+                fontSize: `${setFont()}px`,
+              }}
+              onClick={() => {
+                // console.log(categories.Others);
+                handleBookCategory(categories.Others);
+              }}
+            >
+              <span>
+                <GiBlackBook size={`${setFont() + 7}px`} />
+                <span className="p-1">Others</span>
+              </span>
+            </button>
+          </li>
+        </ul>
+        {books.booksData.length ? (
+          <div
+            className="bg-light d-flex grid"
+            style={{
+              flexFlow: "row wrap",
+            }}
+          >
+            {books.booksData.map((book, index) => {
+              return (
+                <div key={book.isbn + index} className="p-2">
+                  <Book bookDetails={book} onClick={onButtonClick} />
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div>No Data</div>
+        )}
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={100}
+          setCurrentPage={setCurrentBooksPage}
+        />
       </div>
     </div>
   );

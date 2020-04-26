@@ -1,30 +1,56 @@
 import React from "react";
 
-//Books
-import Book1 from "assets/img/book-cover/bbcdune.jpg";
-
 const Book = (props) => {
-  const { Title, Authors, Type, Copies, ISBN } = props;
+  const { bookDetails } = props;
+
+  const { title, authors, thumbnailUrl, edition } = bookDetails;
+
   return (
     <div
-      className=""
-      style={{ width: "16rem", border: "0px", backgroundColor: "inherit" }}
+      className="p-1 rounded text-center"
+      style={{
+        width: "16rem",
+        border: "0px",
+        background: "rgb(0,220,90,0.4)",
+      }}
     >
       <img
         className="rounded"
-        src={Book1}
-        alt="Book Caption"
+        src={`${thumbnailUrl}`}
+        alt={title}
         width="140px"
         height="190px"
       />
       <div className="p-3">
-        <h5 className="text-dark">{Title}</h5>
-        <p className="text-muted">{Authors}</p>
+        <p className="text-dark">{!title ? "no title" : title}</p>
+        <p className="text-muted">
+          {!authors ? (
+            <span className="p-1" style={{ fontSize: "12px" }}>
+              no authors data
+            </span>
+          ) : (
+            authors.map((author, index) => {
+              return (
+                <span key={index} className="p-1" style={{ fontSize: "12px" }}>
+                  {index !== 0 && index === authors.length - 1 && (
+                    <span>and </span>
+                  )}
+                  {author}
+                  {index < authors.length - 3 && <span>, </span>}
+                </span>
+              );
+            })
+          )}
+        </p>
+        {edition && <p className="text-muted h8">{edition}</p>}
         <button
           className="btn btn-outline-danger"
+          onClick={() => {
+            props.onClick(bookDetails);
+          }}
           style={{ borderRadius: "20px" }}
         >
-          View
+          View Details
         </button>
       </div>
     </div>

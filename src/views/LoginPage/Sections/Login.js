@@ -4,7 +4,11 @@ import React from "react";
 import "./login.css";
 
 //icons
-import { GiMonkFace } from "react-icons/gi";
+import { MdLocalLibrary } from "react-icons/md";
+import { FaUserTie } from "react-icons/fa";
+import { FaUserInjured } from "react-icons/fa";
+import { FiLock } from "react-icons/fi";
+import { FaRegUser } from "react-icons/fa";
 
 const LoginPage = (props) => {
   const [userType, setUserType] = React.useState({
@@ -40,7 +44,7 @@ const LoginPage = (props) => {
               className="nav nav-pills d-inline-block my-3"
               style={{ borderRadius: "4px 4px 0px 0px" }}
             >
-              <li className="nav-item d-inline-block">
+              <li className="nav-item d-inline-block border-right">
                 <button
                   className={`btn btn-info py-3 px-2 ${
                     userType.student ? "active" : ""
@@ -55,7 +59,7 @@ const LoginPage = (props) => {
                   }}
                 >
                   <span>
-                    <GiMonkFace size={`${setFont() + 7}px`} />
+                    <FaUserTie size={`${setFont() + 7}px`} />
                     <span className="p-1">Student</span>
                   </span>
                 </button>
@@ -75,12 +79,12 @@ const LoginPage = (props) => {
                   }}
                 >
                   <span>
-                    <GiMonkFace size={`${setFont() + 7}px`} />
+                    <FaUserInjured size={`${setFont() + 7}px`} />
                     <span className="p-1">Faculty</span>
                   </span>
                 </button>
               </li>
-              <li className="nav-item d-inline-block">
+              <li className="nav-item d-inline-block border-left">
                 <button
                   className={`btn btn-info py-3 px-2 ${
                     userType.librarian ? "active" : ""
@@ -95,7 +99,7 @@ const LoginPage = (props) => {
                   }}
                 >
                   <span>
-                    <GiMonkFace size={`${setFont() + 7}px`} />
+                    <MdLocalLibrary size={`${setFont() + 7}px`} />
                     <span className="p-1">Librarian</span>
                   </span>
                 </button>
@@ -105,29 +109,41 @@ const LoginPage = (props) => {
           <div className="pt-3">
             <form className="mx-auto login-form">
               <div className="form-group">
-                {/* <label for="exampleInputEmail1">Email address</label> */}
-                <input
-                  type="email"
-                  className="form-control login-form-control"
-                  id="exampleInputEmail1"
-                  placeholder={
-                    userType.student
-                      ? "Card No"
-                      : userType.faculty
-                      ? "Identification Id"
-                      : "Email"
-                  }
-                  aria-describedby="emailHelp"
-                />
+                <div className="bg-dar" style={{ position: "relative" }}>
+                  <input
+                    type="email"
+                    className="form-control login-form-control"
+                    id="exampleInputEmail1"
+                    placeholder={
+                      userType.student
+                        ? "Card No"
+                        : userType.faculty
+                        ? "Identification Id"
+                        : "Email"
+                    }
+                    aria-describedby="emailHelp"
+                  />
+                  <FaRegUser
+                    color="#17A2B8"
+                    size="20px"
+                    style={{ position: "absolute", top: "35%", right: "5px" }}
+                  />
+                </div>
               </div>
               <div className="form-group">
-                {/* <label for="exampleInputPassword1">Password</label> */}
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="form-control login-form-control"
-                  id="exampleInputPassword1"
-                />
+                <div className="bg-dar" style={{ position: "relative" }}>
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    className="form-control login-form-control"
+                    id="exampleInputPassword1"
+                  />
+                  <FiLock
+                    color="#17A2B8"
+                    size="20px"
+                    style={{ position: "absolute", top: "35%", right: "5px" }}
+                  />
+                </div>
               </div>
               <div className="form-group form-check">
                 <input

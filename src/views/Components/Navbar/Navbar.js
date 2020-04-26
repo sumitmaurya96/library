@@ -43,7 +43,7 @@ const Navbar = (props) => {
 
   const getActiveLink = () => {
     let pathname = props.location.pathname.trim().split(/[\s#?\/]+/)[1];
-    console.log(pathname);
+    //console.log(pathname);
 
     const Classes = { ...classes };
 
@@ -52,7 +52,7 @@ const Navbar = (props) => {
     }
 
     Classes.NavLinks[pathname] = "active";
-    console.log(Classes.NavLinks);
+    //console.log(Classes.NavLinks);
 
     for (const nav in Classes.NavLinks) {
       if (props.location.pathname === nav) {
@@ -70,7 +70,7 @@ const Navbar = (props) => {
   };
 
   const scrollHandler = (event) => {
-    console.log(Math.floor(window.pageYOffset));
+    // console.log(Math.floor(window.pageYOffset));
     if (Math.floor(window.pageYOffset) > 200) {
       setClasses((prevState) => {
         const Classes = { ...prevState };
@@ -85,7 +85,7 @@ const Navbar = (props) => {
       });
     }
 
-    console.log(classes.navbarBackground);
+    //console.log(classes.navbarBackground);
 
     if (Math.floor(window.pageYOffset) <= 200) {
       setClasses((prevState) => {
@@ -108,7 +108,7 @@ const Navbar = (props) => {
   };
 
   React.useEffect(() => {
-    console.log(props.location);
+    //console.log(props.location);
     getActiveLink();
     window.addEventListener("scroll", scrollHandler);
     return () => {

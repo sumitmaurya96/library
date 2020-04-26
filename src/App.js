@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
 import "bootstrap/dist/css/bootstrap.css";
 
 //Routes
@@ -14,6 +13,8 @@ import ServicesPage from "views/ServicesPage/ServicesPage";
 import NoticePage from "views/NoticePage/NoticePage";
 import LoginPage from "views/LoginPage/LoginPage";
 import ProfilePage from "views/ProfilePage/ProfilePage";
+import BookDetailsPage from "views/BookDetails/BookDetailsPage";
+import AskQuestions from "views/AskQuestions/AskQuestions";
 
 function App() {
   return (
@@ -26,8 +27,18 @@ function App() {
         />
         <Route
           exact
+          path="/book-details"
+          component={(props) => <BookDetailsPage {...props} />}
+        />
+        <Route
+          exact
           path="/about"
           component={(props) => <AboutPage {...props} />}
+        />
+        <Route
+          exact
+          path="/ask"
+          component={(props) => <AskQuestions {...props} />}
         />
         <Route
           exact

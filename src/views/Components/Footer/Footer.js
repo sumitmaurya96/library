@@ -34,7 +34,7 @@ const Footer = (props) => {
                 <a href="#">Home</a>
               </li>
               <li>
-                <a href="#">Sign up</a>
+                <a href="#">Login</a>
               </li>
               <li>
                 <a href="#">Downloads</a>
@@ -51,22 +51,22 @@ const Footer = (props) => {
                 <a href="#">Contact us</a>
               </li>
               <li>
-                <a href="#">Reviews</a>
+                <a href="#">Feedback</a>
               </li>
             </ul>
           </div>
           <div className="col-md-2">
-            <h5>Support</h5>
+            <h5>Information</h5>
             <ul>
               <li>
-                <a href="#">FAQ</a>
+                <a href="#">JUMS</a>
               </li>
               <li>
-                <a href="#">Help desk</a>
+                <a href="#">Notice</a>
               </li>
-              <li>
-                <a href="#">Forums</a>
-              </li>
+              {/* <li>
+                <a href="#">JU Library</a>
+              </li> */}
             </ul>
           </div>
           <div className="col-md-3">

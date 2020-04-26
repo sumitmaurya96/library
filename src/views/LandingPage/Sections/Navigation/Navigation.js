@@ -9,8 +9,8 @@ import Background from "assets/img/navigation-bg.jpg";
 
 //Icons
 import { AiFillAudio } from "react-icons/ai";
-import { MdPeople } from "react-icons/md";
-import { GiCrossbow } from "react-icons/gi";
+import { MdAccessTime } from "react-icons/md";
+import { FaServicestack } from "react-icons/fa";
 
 const Navigation = (props) => {
   return (
@@ -24,22 +24,31 @@ const Navigation = (props) => {
     >
       <div className="row text-light">
         <div className="col-sm-4">
-          <button className="btn btn-outline-light">
+          <button
+            className="btn btn-outline-light"
+            onClick={() => props.handleNavigationClick("askLibrarian")}
+          >
             <AiFillAudio size="100px" />
           </button>
           <p className="h2 pt-4 mb-4">Ask a Librarin</p>
         </div>
         <div className="col-sm-4">
-          <button className="btn btn-outline-light">
-            <GiCrossbow size="100px" />
+          <button
+            className="btn btn-outline-light"
+            onClick={() => props.handleNavigationClick("services")}
+          >
+            <FaServicestack size="100px" />
           </button>
-          <p className="h2 pt-4 mb-4">Innovation</p>
+          <p className="h2 pt-4 mb-4">Library Services</p>
         </div>
         <div className="col-sm-4">
-          <button className="btn btn-outline-light">
-            <MdPeople size="100px" />
+          <button
+            className="btn btn-outline-light"
+            onClick={() => props.handleNavigationClick("timing")}
+          >
+            <MdAccessTime size="100px" />
           </button>
-          <p className="h2 pt-4">Join the Library</p>
+          <p className="h2 pt-4">Library Timing</p>
         </div>
       </div>
     </div>

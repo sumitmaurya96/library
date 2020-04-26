@@ -19,18 +19,22 @@ export default function AboutPage(props) {
         className="text-center"
         style={{
           backgroundImage: `url(${LibraryStaff})`,
-          height: "550px",
-          paddingTop: "300px",
-          paddingBlock: "240px",
+          backgroundSize: "cover",
+          backgroundPosition: "top",
+          height: "400px",
         }}
       >
-        <h1
-          className="text-light"
-          style={{ fontSize: "60px", fontFamily: "cursive" }}
+        <div
+          className="d-flex justify-content-center"
+          style={{ width: "100%", height: "100%" }}
         >
-          Together we can do great thing
-        </h1>
-        <p className="text-light">{"          "} - JU Library Staff</p>
+          <h1
+            className="text-light align-self-center"
+            style={{ fontSize: "60px", fontFamily: "cursive" }}
+          >
+            Together we can do great thing
+          </h1>
+        </div>
       </div>
       <div
         className="jumbotron text-center"
@@ -44,11 +48,11 @@ export default function AboutPage(props) {
               textShadow: "0.2vw 0.2vw 0.2vw #00203f",
             }}
           >
-            Welcome to the Library
+            Here We Go...
           </h1>
         </Typist>
         <p className="text-muted" style={{ fontSize: "20px" }}>
-          Welcome to Jadavpur University Library
+          Introducing you to our team
         </p>
       </div>
 
