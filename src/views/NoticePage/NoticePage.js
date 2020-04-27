@@ -3,6 +3,7 @@ import Navbar from "views/Components/Navbar/Navbar";
 import Footer from "views/Components/Footer/Footer";
 import Pagination from "./Sections/Pagination";
 import ManageNoticeSection from "./Sections/ManageNoticeSection";
+import { GoPlus } from "react-icons/go";
 
 const NoticePage = (props) => {
   const type = {
@@ -94,7 +95,7 @@ const NoticePage = (props) => {
 
   const manageNotice = (operation, data) => {
     const TableData = [...tableData];
-    if (!data || !data.title || !data.id || !data.link || !operation) {
+    if (!data || !data.title || !data.id || !operation) {
       return null;
     }
     //axios operations
@@ -194,9 +195,17 @@ const NoticePage = (props) => {
                         <th scope="row">{index + 1}</th>
                         <td>{data.details}</td>
                         <td>
-                          <a target="_blank" href={`${data.link}`}>
-                            {data.is_downloadable ? "Download" : data.title}
-                          </a>
+                          {data.link ? (
+                            <a
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              href={`${data.link}`}
+                            >
+                              {data.is_downloadable ? "Download" : data.title}
+                            </a>
+                          ) : (
+                            <p className="">{data.title}</p>
+                          )}
                         </td>
                         {type.librarian.localeCompare(user.userType) === 0 && (
                           <React.Fragment>
@@ -233,7 +242,8 @@ const NoticePage = (props) => {
                     className="btn btn-md btn-info"
                     onClick={toggleNewNoticePage}
                   >
-                    New Notice
+                    <GoPlus className="h5" />
+                    <span className="h5 pl-2">New Notice</span>
                   </button>
                 </div>
               )}

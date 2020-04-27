@@ -142,6 +142,7 @@ const AboutPage = (props) => {
             <a
               className="btn btn-lg btn-danger"
               target="_blank"
+              rel="noopener noreferrer"
               href="http://www.jaduniv.edu.in/templates/newpages/library.html"
             >
               Know more

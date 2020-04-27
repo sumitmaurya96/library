@@ -1,4 +1,5 @@
 import React from "react";
+import { MdError } from "react-icons/md";
 
 const ManageNoticeSection = (props) => {
   const { dataToBeEdited } = props;
@@ -53,18 +54,24 @@ const ManageNoticeSection = (props) => {
         </p>
       </div>
       <form className="mx-auto rounded border border-info p-3">
-        <div className="bg-dar py-2">
+        <div className="py-2" style={{ position: "relative" }}>
           <input
             ref={titleRef}
-            className="border-info"
             defaultValue={!dataToBeEdited.flag ? "" : dataToBeEdited.data.title}
             type="text"
             placeholder="Title"
             id="title"
             className="login-form-control form-control"
           />
+          {/* implement show error */}
+          {/* <span
+            className="h3 text-danger"
+            style={{ position: "absolute", top: "20%", right: "5px" }}
+          >
+            <MdError />
+          </span> */}
         </div>
-        <div className="py-2">
+        <div className="py-2" style={{ position: "relative" }}>
           <textarea
             ref={detailsRef}
             placeholder="Details"
@@ -75,13 +82,19 @@ const ManageNoticeSection = (props) => {
             className="form-control login-form-control"
             id="details"
           />
+          {/* <span
+            className="h3 text-danger"
+            style={{ position: "absolute", top: "5px", right: "5px" }}
+          >
+            <MdError />
+          </span> */}
         </div>
         <div className="py-2">
           <input
             ref={linkRef}
             type="text"
             defaultValue={!dataToBeEdited.flag ? "" : dataToBeEdited.data.link}
-            placeholder="Link"
+            placeholder="Link(optional)"
             className="form-control login-form-control"
             id="link"
           />

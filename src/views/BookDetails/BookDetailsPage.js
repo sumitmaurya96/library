@@ -9,8 +9,21 @@ import BookDetails from "./Sections/BookDetails";
 
 //virtual database (will be removed)
 import allBooksData from "views/virtualDB/books/books";
+import EditBookDetails from "./Sections/EditBookDetails";
 
 const BookDetailsPage = (props) => {
+  const type = {
+    librarian: "librarian",
+    student: "student",
+    faculty: "faculty",
+  };
+
+  const [user, setUser] = React.useState({
+    userType: null,
+  });
+
+  const [showEditBookDetails, setShowEditBookDetails] = React.useState(false);
+
   const [book, setBook] = React.useState({
     isFound: null,
     details: {
@@ -27,8 +40,6 @@ const BookDetailsPage = (props) => {
   });
 
   const fetchBookData = () => {
-    //console.log(props.location.search);
-    //console.log(props.location.state);
     if (!props.location.search) {
       //console.log("search Null");
       setBook((state) => {
@@ -71,8 +82,6 @@ const BookDetailsPage = (props) => {
       setBook(Book);
       //console.log("state is undefined book not found");
     } else {
-      //console.log("state is defined book found");
-      //console.log(book);
       const Book = { ...book };
       Book.isFound = true;
       Book.details = { ...props.location.state.bookDetails };
@@ -80,8 +89,41 @@ const BookDetailsPage = (props) => {
     }
   };
 
+  const saveEditedBookDetails = (data) => {
+    // console.log(data);
+
+    setBook((state) => {
+      const Book = { ...book };
+      Book.details = { ...data };
+      return Book;
+    });
+
+    setShowEditBookDetails((state) => {
+      return !state;
+    });
+    //Return success
+    return 1;
+  };
+
+  const handleClick = (args) => {
+    if ("edit".localeCompare(args) === 0) {
+      setShowEditBookDetails((state) => {
+        return !state;
+      });
+    } else if ("delete".localeCompare(args) === 0) {
+      //use axios delete
+      props.history.push("/resources");
+    }
+  };
+
   React.useEffect(() => {
     fetchBookData();
+    //set Usertype librarian
+    setUser((state) => {
+      const User = { ...state };
+      User.userType = type.librarian;
+      return User;
+    });
     //console.log(book);
   }, []);
 
@@ -92,23 +134,7 @@ const BookDetailsPage = (props) => {
         className="p-3 pt-5 bg-light"
         style={{ marginTop: "0px", minHeight: "100vh" }}
       >
-        {book.isFound === true && (
-          <div className="row pt-5">
-            <div className="col-md-5">
-              <div className="text-center p-1">
-                <img
-                  className="p-3"
-                  style={{ width: "80%", height: "auto" }}
-                  src={`${book.details.thumbnailUrl}`}
-                  alt={book.details.title}
-                />
-              </div>
-            </div>
-            {/* Returns a col-md-7 div */}
-            <BookDetails {...book} />
-          </div>
-        )}
-        {(book.isFound === false || book.isFound === null) && (
+        {!book.isFound ? (
           <div className="row" style={{ height: "60vh" }}>
             <div className="col-md-6 offset-md-3 d-flex">
               <div className="align-self-center w-100">
@@ -121,6 +147,50 @@ const BookDetailsPage = (props) => {
               </div>
             </div>
           </div>
+        ) : (
+          <React.Fragment>
+            {!showEditBookDetails ? (
+              <div className="row pt-5">
+                <div className="col-md-5">
+                  <div className="text-center p-1">
+                    <img
+                      className="p-3"
+                      style={{ width: "80%", height: "auto" }}
+                      src={`${book.details.thumbnailUrl}`}
+                      alt={book.details.title}
+                    />
+                  </div>
+                  <div className="text-center p-2">
+                    <button
+                      className="btn btn-md btn-warning mr-2"
+                      onClick={() => handleClick("edit")}
+                    >
+                      Edit Details
+                    </button>
+                    <button
+                      className="btn btn-md btn-danger ml-2"
+                      onClick={() => handleClick("delete")}
+                    >
+                      Delete Book
+                    </button>
+                  </div>
+                </div>
+                {/* Returns a col-md-7 div */}
+                <BookDetails {...book} />
+              </div>
+            ) : (
+              <React.Fragment>
+                {type.librarian.localeCompare(user.userType) === 0 &&
+                  showEditBookDetails && (
+                    <EditBookDetails
+                      goBack={() => handleClick("edit")}
+                      dataToBeEdited={book.details}
+                      saveEditedDetails={saveEditedBookDetails}
+                    />
+                  )}
+              </React.Fragment>
+            )}
+          </React.Fragment>
         )}
       </div>
       <Footer />
