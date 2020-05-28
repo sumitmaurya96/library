@@ -3,35 +3,26 @@ import { MdError } from "react-icons/md";
 
 const ManageNoticeSection = (props) => {
   const { dataToBeEdited } = props;
-  const operation = {
-    add: "add",
-    edit: "edit",
+
+  const [noticeData, setNoticeData] = React.useState({
+    title: "",
+    details: "",
+    link: "",
+  });
+
+  const onInputChange = (field, data) => {
+    setNoticeData((state) => {
+      const NoticeData = { ...state };
+      NoticeData[field] = data;
+      return NoticeData;
+    });
   };
 
-  const titleRef = React.createRef();
-  const linkRef = React.createRef();
-  const detailsRef = React.createRef();
-
   const handleSubmit = (args) => {
-    const data = {
-      id: `${new Date().getDate()}${new Date().getMonth()}${new Date().getFullYear()}${new Date().getTime()}`,
-      title: null,
-      details: null,
-      link: null,
-      date: `${new Date().toISOString()}`,
-    };
-
-    if (operation.add.localeCompare(args) === 0) {
-      data.title = titleRef.current.value;
-      data.details = detailsRef.current.value;
-      data.link = linkRef.current.value;
-    } else if (operation.edit.localeCompare(args) === 0) {
-      data.id = dataToBeEdited.data.id;
-      data.title = titleRef.current.value;
-      data.details = detailsRef.current.value;
-      data.link = linkRef.current.value;
+    const data = { ...noticeData };
+    if (args === "edit") {
+      data["_id"] = dataToBeEdited.data._id;
     }
-
     const feedback = props.manageNotice(args, data);
 
     if (!feedback) {
@@ -40,6 +31,19 @@ const ManageNoticeSection = (props) => {
   };
 
   React.useEffect(() => {
+    setNoticeData((state) => {
+      const NoticeData = { ...state };
+      NoticeData.title = dataToBeEdited.flag ? dataToBeEdited.data.title : "";
+      NoticeData.details = dataToBeEdited.flag
+        ? dataToBeEdited.data.details
+        : "";
+      NoticeData.link =
+        dataToBeEdited.flag && dataToBeEdited.data.link
+          ? dataToBeEdited.data.link
+          : "";
+      return NoticeData;
+    });
+
     return () => {
       //component unmounting
       props.cleanDataToBeEdited();
@@ -56,8 +60,8 @@ const ManageNoticeSection = (props) => {
       <form className="mx-auto rounded border border-info p-3">
         <div className="py-2" style={{ position: "relative" }}>
           <input
-            ref={titleRef}
-            defaultValue={!dataToBeEdited.flag ? "" : dataToBeEdited.data.title}
+            value={noticeData.title}
+            onChange={(event) => onInputChange("title", event.target.value)}
             type="text"
             placeholder="Title"
             id="title"
@@ -73,11 +77,9 @@ const ManageNoticeSection = (props) => {
         </div>
         <div className="py-2" style={{ position: "relative" }}>
           <textarea
-            ref={detailsRef}
+            value={noticeData.details}
+            onChange={(event) => onInputChange("details", event.target.value)}
             placeholder="Details"
-            defaultValue={
-              !dataToBeEdited.flag ? "" : dataToBeEdited.data.details
-            }
             row="1"
             className="form-control login-form-control"
             id="details"
@@ -91,9 +93,9 @@ const ManageNoticeSection = (props) => {
         </div>
         <div className="py-2">
           <input
-            ref={linkRef}
+            value={noticeData.link}
+            onChange={(event) => onInputChange("link", event.target.value)}
             type="text"
-            defaultValue={!dataToBeEdited.flag ? "" : dataToBeEdited.data.link}
             placeholder="Link(optional)"
             className="form-control login-form-control"
             id="link"

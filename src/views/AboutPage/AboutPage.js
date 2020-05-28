@@ -7,9 +7,21 @@ import Footer from "views/Components/Footer/Footer";
 import backgroundTop from "assets/img/bg-about.jpg";
 
 const AboutPage = (props) => {
+  const timingSectionRef = React.createRef();
+
+  React.useEffect(() => {
+    if (props.location.state) {
+      console.log("yes");
+      setTimeout(() => {
+        timingSectionRef.current.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
+  }, []);
+
   return (
     <div>
       <Navbar {...props} />
+
       <div
         className="w-100"
         style={{
@@ -116,7 +128,7 @@ const AboutPage = (props) => {
           </p>
         </section>
         <hr className="bg-secondary" />
-        <section className="p-1">
+        <section className="p-1" ref={timingSectionRef}>
           <h1 className="text-center h3">Library Timing</h1>
           <p>
             Under the potential for excellence programme of UGC, Centre for

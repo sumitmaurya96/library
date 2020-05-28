@@ -6,16 +6,18 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 const Pagination = (props) => {
   const { currentPage, totalPages } = props;
 
+  console.log(currentPage, totalPages);
+
   const setPage = (page) => {
     let CurrentPage = currentPage;
     if (typeof page === typeof "abc") {
-      if ("next".localeCompare(page) === 0) {
+      if ("next" === page) {
         CurrentPage++;
-      } else if ("prev".localeCompare(page) === 0) {
+      } else if ("prev" === page) {
         CurrentPage--;
-      } else if ("first".localeCompare(page) === 0) {
+      } else if ("first" === page) {
         CurrentPage = 1;
-      } else if ("last".localeCompare(page) === 0) {
+      } else if ("last" === page) {
         CurrentPage = totalPages;
       }
     } else {

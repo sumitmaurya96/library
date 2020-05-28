@@ -1,132 +1,129 @@
 import React from "react";
+import axios from "axios";
+
+//Components
 import Navbar from "views/Components/Navbar/Navbar";
 import Footer from "views/Components/Footer/Footer";
 
 //Icons
 import { MdSearch } from "react-icons/md";
 
-//sections
-import FilterSection from "./Sections/FilterSection";
-import FilterStatus from "./Sections/FilterStatus";
+//Sections
+import SearchResults from "./Sections/SearchResults";
 
 const SearchPage = (props) => {
-  const [filters, setFilters] = React.useState({
-    show: false,
-    checkbox: {
-      contentType: [
-        { id: "all", value: "All", isChecked: true },
-        { id: "magazine", value: "Magazines", isChecked: false },
-        { id: "journal", value: "Journals", isChecked: false },
-        { id: "departmental", value: "Departmental", isChecked: false },
-        { id: "story", value: "Story", isChecked: false },
-      ],
-      discipline: [
-        { id: "all", value: "All", isChecked: true },
-        { id: "it", value: "Information Technology", isChecked: false },
-        { id: "instrumentation", value: "Instrumentation", isChecked: false },
-        { id: "printing", value: "Printing", isChecked: false },
-        { id: "power", value: "Power", isChecked: false },
-        { id: "construction", value: "Construction", isChecked: false },
-      ],
-      language: [
-        { id: "all", value: "All", isChecked: true },
-        { id: "hindi", value: "Hindi", isChecked: false },
-        { id: "english", value: "English", isChecked: false },
-        { id: "bangla", value: "Bangla", isChecked: false },
-      ],
-    },
+  const [search, setSearch] = React.useState({
+    query: "",
+    pageNumber: 1,
+  });
+  const [results, setResults] = React.useState({
+    showSearchResults: false,
+    totalBooks: -1,
+    books: null,
   });
 
-  const toggleFilterSection = () => {
-    setFilters((state) => {
-      const Filters = { ...state };
-      Filters.show = !Filters.show;
-      return Filters;
+  const onInputChange = (text) => {
+    setSearch((state) => {
+      const Search = { ...state };
+      Search.query = text;
+      return Search;
     });
   };
 
-  const setCheckboxStatus = (checkbox) => {
-    setFilters((state) => {
-      const Filters = { ...state };
-      console.log(checkbox);
-      Filters.checkbox = { ...checkbox };
-      return Filters;
-    });
-    //also toggle
-    toggleFilterSection();
-  };
-
-  const searchClick = (args) => {
-    console.log(filters.checkbox);
+  const onFormSubmit = () => {
+    axios
+      .get(
+        `http://localhost:5000/books/text-search/pageNumber=${search.pageNumber}&query=${search.query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((results) => {
+        console.log(search);
+        console.log(results);
+        setResults((state) => {
+          const Results = { ...state };
+          Results.showSearchResults = true;
+          Results.totalBooks = results.data.total;
+          Results.books = results.data.books;
+          return Results;
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
-    <div>
+    <React.Fragment>
       <Navbar {...props} />
-      <div className="px-3" style={{ minHeight: "80vh", paddingTop: "80px" }}>
-        <FilterStatus
-          toggleFilterSection={toggleFilterSection}
-          {...filters.checkbox}
+      {results.showSearchResults ? (
+        <SearchResults
+          {...props}
+          books={results.books}
+          search={search}
+          onFormSubmit={onFormSubmit}
+          onInputChange={onInputChange}
         />
-        {filters.show ? (
-          <FilterSection
-            setCheckboxStatus={setCheckboxStatus}
-            checkbox={filters.checkbox}
-          />
-        ) : (
-          <div
-            style={{
-              maxWidth: "500px",
-              margin: "0px auto",
-              paddingTop: "18vh",
-              fontFamily: "serif",
-            }}
-          >
-            <p
-              className="text-info text-center"
-              style={{
-                fontSize: `${
-                  16 + ((40 - 16) * (window.innerWidth - 300)) / (1600 - 300)
-                }px`,
-              }}
-            >
-              Library Search
-            </p>
-            <div
-              className="input-group"
-              style={{
-                position: "relative",
-              }}
-            >
-              <input
-                type="text"
-                className="form-control border-info rounded-0"
-                placeholder="Search"
-                aria-label="Search"
-                aria-describedby="basic-addon2"
-              />
-              <div
+      ) : (
+        <div className="d-flex" style={{ height: "80vh" }}>
+          <div className="row m-0 align-self-center w-100">
+            <div className="col-md-6 offset-md-3">
+              <p
+                className="text-info text-center"
                 style={{
-                  position: "relative",
-                  top: "4px",
-                  right: "25px",
-                  zIndex: "10",
+                  fontSize: `${
+                    16 + ((40 - 16) * (window.innerWidth - 300)) / (1600 - 300)
+                  }px`,
                 }}
               >
+                Library Search
+              </p>
+              <form
+                className="input-group"
+                style={{
+                  position: "relative",
+                }}
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  onFormSubmit();
+                }}
+              >
+                <input
+                  type="text"
+                  value={search.query}
+                  onChange={(event) => onInputChange(event.target.value)}
+                  className="form-control border-info rounded-0"
+                  placeholder="Search"
+                  aria-label="Search"
+                  aria-describedby="basic-addon2"
+                />
                 <a
                   className="h4 text-info"
                   href="#"
-                  onClick={() => searchClick("save")}
+                  type="submit"
+                  style={{
+                    position: "absolute",
+                    top: "10%",
+                    right: "2%",
+                    zIndex: "10",
+                  }}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onFormSubmit();
+                  }}
                 >
                   <MdSearch />
                 </a>
-              </div>
+              </form>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
       <Footer />
-    </div>
+    </React.Fragment>
   );
 };
 

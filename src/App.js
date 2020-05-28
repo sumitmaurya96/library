@@ -1,6 +1,16 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
+
+//Helper
+import { ProtectedRoute } from "./Helpers/protected.route";
+import { LoginRoute } from "./Helpers/login.route";
 
 //Routes
 import LandingPage from "views/LandingPage/LandingPage";
@@ -13,80 +23,153 @@ import ServicesPage from "views/ServicesPage/ServicesPage";
 import NoticePage from "views/NoticePage/NoticePage";
 import LoginPage from "views/LoginPage/LoginPage";
 import ProfilePage from "views/ProfilePage/ProfilePage";
-import BookDetailsPage from "views/BookDetails/BookDetailsPage";
-import AskQuestions from "views/AskQuestions/AskQuestions";
 
 function App() {
+  const initialUserState = {
+    loggedIn: false,
+    userData: {
+      id: "",
+      firstname: "",
+      lastname: "",
+      username: "",
+      email: "",
+      role: "",
+      favourites: [],
+    },
+  };
+
+  const [user, setUser] = React.useState(initialUserState);
+
+  const logUserOut = () => {
+    setUser(initialUserState);
+  };
+
+  const setUserData = (tokenArgs) => {
+    const token = tokenArgs ? tokenArgs : localStorage.getItem("token");
+    axios
+      .get("http://localhost:5000/users/yourself", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(({ data }) => {
+        //console.log(data);
+
+        setUser((state) => {
+          const User = { ...state };
+          User.loggedIn = true;
+          User.userData.id = data._id;
+          User.userData.firstname = data.firstname;
+          User.userData.lastname = data.lastname;
+          User.userData.username = data.username;
+          User.userData.email = data.email;
+          User.userData.profilePicUrl = data.profilePicUrl;
+          User.userData.role = data.role;
+          User.userData.favourites = data.favourites;
+          return User;
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  React.useEffect(() => {
+    setUserData(null);
+  }, []);
+
   return (
     <Router>
       <Switch>
         <Route
           exact
           path="/home"
-          component={(props) => <LandingPage {...props} />}
-        />
-        <Route
-          exact
-          path="/book-details"
-          component={(props) => <BookDetailsPage {...props} />}
+          component={(props) => (
+            <LandingPage user={user} logOut={logUserOut} {...props} />
+          )}
         />
         <Route
           exact
           path="/about"
-          component={(props) => <AboutPage {...props} />}
-        />
-        <Route
-          exact
-          path="/ask"
-          component={(props) => <AskQuestions {...props} />}
+          component={(props) => (
+            <AboutPage user={user} logOut={logUserOut} {...props} />
+          )}
         />
         <Route
           exact
           path="/card-status"
-          component={(props) => <CardStatusPage {...props} />}
+          component={(props) => (
+            <CardStatusPage user={user} logOut={logUserOut} {...props} />
+          )}
         />
         <Route
           exact
           path="/team"
-          component={(props) => <TeamPage {...props} />}
+          component={(props) => (
+            <TeamPage user={user} logOut={logUserOut} {...props} />
+          )}
         />
         <Route
           exact
           path="/resources"
-          component={(props) => <ResourcesPage {...props} />}
+          component={(props) => (
+            <ResourcesPage user={user} logOut={logUserOut} {...props} />
+          )}
         />
         <Route
           exact
           path="/search"
-          component={(props) => <SearchPage {...props} />}
+          component={(props) => (
+            <SearchPage user={user} logOut={logUserOut} {...props} />
+          )}
         />
         <Route
           exact
           path="/services"
-          component={(props) => <ServicesPage {...props} />}
+          component={(props) => (
+            <ServicesPage user={user} logOut={logUserOut} {...props} />
+          )}
         />
         <Route
           exact
           path="/notice"
-          component={(props) => <NoticePage {...props} />}
+          component={(props) => (
+            <NoticePage user={user} logOut={logUserOut} {...props} />
+          )}
         />
-        <Route
+        <LoginRoute
           exact
+          loggedIn={user.loggedIn}
           path="/login"
-          component={(props) => <LoginPage {...props} />}
+          component={(props) => (
+            <LoginPage
+              user={user}
+              setUser={setUserData}
+              logOut={logUserOut}
+              {...props}
+            />
+          )}
         />
-        <Route
+        <ProtectedRoute
           exact
+          loggedIn={user.loggedIn}
           path="/profile"
-          component={(props) => <ProfilePage {...props} />}
+          component={(props) => (
+            <ProfilePage user={user} logOut={logUserOut} {...props} />
+          )}
         />
         <Route
           exact
           path="*"
-          component={() => (
-            <div>
-              <p>Page Not Found</p>
-            </div>
+          component={(props) => (
+            <Redirect
+              to={{
+                pathname: "/home",
+                state: {
+                  from: props.location,
+                },
+              }}
+            />
           )}
         />
       </Switch>

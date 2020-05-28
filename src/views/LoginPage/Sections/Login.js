@@ -4,37 +4,52 @@ import React from "react";
 import "./login.css";
 
 //icons
+import { GoAlert } from "react-icons/go";
 import { MdLocalLibrary } from "react-icons/md";
 import { FaUserTie } from "react-icons/fa";
 import { FaUserInjured } from "react-icons/fa";
+import { FaUserShield } from "react-icons/fa";
 import { FiLock } from "react-icons/fi";
 import { FaRegUser } from "react-icons/fa";
 
+//Roles
+import { student, librarian, admin, faculty } from "./roles";
+
 const LoginPage = (props) => {
-  const [userType, setUserType] = React.useState({
-    student: true,
-    faculty: false,
-    librarian: false,
+  const { authFaild } = props;
+
+  const [formData, setFormData] = React.useState({
+    username: "",
+    password: "",
   });
 
-  const handleUserType = (user) => {
-    const UserType = { ...userType };
-    UserType.student = false;
-    UserType.faculty = false;
-    UserType.librarian = false;
-    if (user === 0) UserType.student = true;
-    else if (user === 1) UserType.faculty = true;
-    else if (user === 2) UserType.librarian = true;
-    setUserType(UserType);
+  const [formType, setFormType] = React.useState(student);
+
+  const handleFormType = (formType) => {
+    setFormType(formType);
+    props.setAuthFaild(false);
+    setFormData({
+      username: "",
+      password: "",
+    });
   };
 
+  const handleFormChange = (field, event) => {
+    event.persist();
+    props.setAuthFaild(false);
+    setFormData((state) => {
+      const FormData = { ...state };
+      FormData[field] = event.target.value;
+      return FormData;
+    });
+  };
   const setFont = () => {
     return 10 + (16 - 10) * ((window.innerWidth - 300) / (1600 - 300));
   };
 
   return (
     <div className="row py-4">
-      <div className="col-md-4 offset-md-4 rounded bg-light shadow-lg">
+      <div className="col-md-6 offset-md-3 rounded bg-light shadow-lg">
         <div className="jumbotron bg-light">
           <div className="text-center">
             <p className="h1 text-muted strong">Login</p>
@@ -47,7 +62,7 @@ const LoginPage = (props) => {
               <li className="nav-item d-inline-block border-right">
                 <button
                   className={`btn btn-info py-3 px-2 ${
-                    userType.student ? "active" : ""
+                    formType === student ? "active" : ""
                   }`}
                   href="#"
                   style={{
@@ -55,7 +70,7 @@ const LoginPage = (props) => {
                     fontSize: `${setFont()}px`,
                   }}
                   onClick={() => {
-                    handleUserType(0);
+                    handleFormType(student);
                   }}
                 >
                   <span>
@@ -67,7 +82,7 @@ const LoginPage = (props) => {
               <li className="nav-item d-inline-block">
                 <button
                   className={`btn btn-info py-3 px-2 ${
-                    userType.faculty ? "active" : ""
+                    formType === faculty ? "active" : ""
                   }`}
                   href="#"
                   style={{
@@ -75,7 +90,7 @@ const LoginPage = (props) => {
                     fontSize: `${setFont()}px`,
                   }}
                   onClick={() => {
-                    handleUserType(1);
+                    handleFormType(faculty);
                   }}
                 >
                   <span>
@@ -87,7 +102,27 @@ const LoginPage = (props) => {
               <li className="nav-item d-inline-block border-left">
                 <button
                   className={`btn btn-info py-3 px-2 ${
-                    userType.librarian ? "active" : ""
+                    formType === librarian ? "active" : ""
+                  }`}
+                  href="#"
+                  style={{
+                    borderRadius: "0px",
+                    fontSize: `${setFont()}px`,
+                  }}
+                  onClick={() => {
+                    handleFormType(librarian);
+                  }}
+                >
+                  <span>
+                    <MdLocalLibrary size={`${setFont() + 7}px`} />
+                    <span className="p-1">Librarian</span>
+                  </span>
+                </button>
+              </li>
+              <li className="nav-item d-inline-block border-left">
+                <button
+                  className={`btn btn-info py-3 px-2 ${
+                    formType === admin ? "active" : ""
                   }`}
                   href="#"
                   style={{
@@ -95,12 +130,12 @@ const LoginPage = (props) => {
                     fontSize: `${setFont()}px`,
                   }}
                   onClick={() => {
-                    handleUserType(2);
+                    handleFormType(admin);
                   }}
                 >
                   <span>
-                    <MdLocalLibrary size={`${setFont() + 7}px`} />
-                    <span className="p-1">Librarian</span>
+                    <FaUserShield size={`${setFont() + 7}px`} />
+                    <span className="p-1">Admin</span>
                   </span>
                 </button>
               </li>
@@ -111,23 +146,26 @@ const LoginPage = (props) => {
               <div className="form-group">
                 <div className="bg-dar" style={{ position: "relative" }}>
                   <input
-                    type="email"
+                    type="username"
                     className="form-control login-form-control"
-                    id="exampleInputEmail1"
-                    placeholder={
-                      userType.student
-                        ? "Card No"
-                        : userType.faculty
-                        ? "Identification Id"
-                        : "Email"
-                    }
-                    aria-describedby="emailHelp"
+                    name="username"
+                    placeholder={formType === student ? "Card No" : "Username"}
+                    value={formData.username}
+                    onChange={(event) => handleFormChange("username", event)}
                   />
-                  <FaRegUser
-                    color="#17A2B8"
-                    size="20px"
-                    style={{ position: "absolute", top: "35%", right: "5px" }}
-                  />
+                  {authFaild ? (
+                    <GoAlert
+                      color={authFaild ? "red" : "#17A2B8"}
+                      size="20px"
+                      style={{ position: "absolute", top: "35%", right: "5px" }}
+                    />
+                  ) : (
+                    <FaRegUser
+                      color={authFaild ? "red" : "#17A2B8"}
+                      size="20px"
+                      style={{ position: "absolute", top: "35%", right: "5px" }}
+                    />
+                  )}
                 </div>
               </div>
               <div className="form-group">
@@ -136,27 +174,27 @@ const LoginPage = (props) => {
                     type="password"
                     placeholder="Password"
                     className="form-control login-form-control"
-                    id="exampleInputPassword1"
+                    name="password"
+                    value={formData.password}
+                    onChange={(event) => handleFormChange("password", event)}
                   />
-                  <FiLock
-                    color="#17A2B8"
-                    size="20px"
-                    style={{ position: "absolute", top: "35%", right: "5px" }}
-                  />
+
+                  {authFaild ? (
+                    <GoAlert
+                      color={authFaild ? "red" : "#17A2B8"}
+                      size="20px"
+                      style={{ position: "absolute", top: "35%", right: "5px" }}
+                    />
+                  ) : (
+                    <FiLock
+                      color={authFaild ? "red" : "#17A2B8"}
+                      size="20px"
+                      style={{ position: "absolute", top: "35%", right: "5px" }}
+                    />
+                  )}
                 </div>
               </div>
-              <div className="form-group form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input  login-form-check-input"
-                  id="exampleCheck1"
-                />
-                <label
-                  className="form-check-label py-1 login-form-check-label"
-                  for="exampleCheck1"
-                >
-                  Remember Me
-                </label>
+              <div className="py-1" style={{ height: "30px" }}>
                 <a
                   className="float-right"
                   href="#"
@@ -165,8 +203,15 @@ const LoginPage = (props) => {
                   Forget password?
                 </a>
               </div>
-              <div className="text-center">
-                <button type="submit" className="btn btn-md btn-outline-info">
+              <div className="text-center py-2">
+                <button
+                  type="submit"
+                  className="btn btn-md btn-outline-info"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    props.handleFormSubmit(formData);
+                  }}
+                >
                   Login
                 </button>
               </div>

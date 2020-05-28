@@ -1,46 +1,64 @@
 import React from "react";
 
-//Images
-import ProfilePic from "assets/img/faces/kendall.jpg";
-
 //views
 import Navbar from "views/Components/Navbar/Navbar";
 import Footer from "views/Components/Footer/Footer";
 
-//sections
-import CardStatus from "./Sections/CardStatus";
+//Sections
+import AddNewUser from "./Sections/AddNewUser";
 import UserProfile from "./Sections/UserProfile";
+import Favourites from "./Sections/Favourites";
 
-export default function ProfilePage(props) {
-  const userData = {
-    cardNumber: "SL2069",
-    name: "Ananya Sarkar",
+//Icons
+import { GoPlus } from "react-icons/go";
+
+const ProfilePage = (props) => {
+  const [fav, setFav] = React.useState(false);
+  const [showNewUserPage, setShowNewUserPage] = React.useState(false);
+  const { favourites, ...rest } = props.user.userData;
+
+  const newUserPageVisible = (args) => {
+    setShowNewUserPage(args);
+  };
+
+  const setFavouriteVisible = (args) => {
+    setFav(args);
   };
 
   return (
-    <div>
-      <Navbar {...props} />
-      <div style={{ paddingTop: "80px", minHeight: "80vh" }}>
-        <div className="row" style={{ margin: "0" }}>
-          <div
-            className="col-md-5 p-3"
-            style={{
-              marginBottom: "0",
-              boxSizing: "border-box",
-            }}
-          >
-            <UserProfile {...userData} />
+    <React.Fragment>
+      <Navbar user={props.user} {...props} />
+      <div style={{ paddingTop: "80px", minHeight: "100vh" }}>
+        {!fav ? (
+          <div className="row" style={{ margin: "0" }}>
+            <div
+              className="col-md-10 p-3 offset-md-1"
+              style={{
+                marginBottom: "0",
+                boxSizing: "border-box",
+              }}
+            >
+              <UserProfile
+                userData={rest}
+                favourites={favourites}
+                setFavouriteVisible={setFavouriteVisible}
+              />
+            </div>
           </div>
-          <div
-            className="col-md-7 my-3 text-center p-2 border-info"
-            style={{ marginBottom: "0", borderLeft: "1px solid" }}
-            // backgroundColor: "#4A71B0"
-          >
-            <CardStatus {...props} />
+        ) : (
+          <div className="row" style={{ margin: "0" }}>
+            <div className="col-md-10 offset-md-1 my-3 text-center p-2 mb-0">
+              <Favourites
+                favourites={favourites}
+                setFavouriteVisible={setFavouriteVisible}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <Footer />
-    </div>
+    </React.Fragment>
   );
-}
+};
+
+export default ProfilePage;

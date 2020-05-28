@@ -2,21 +2,15 @@ import React from "react";
 
 //Images
 import Background from "assets/img/navigation-bg.jpg";
-// import Book from "./Book";
 
-//CSS
-// import "./tableStyle.css";
-
-//Icons
-import { AiFillAudio } from "react-icons/ai";
-import { MdAccessTime } from "react-icons/md";
+import { MdAccessTime, MdFeedback } from "react-icons/md";
 import { FaServicestack } from "react-icons/fa";
 
 const Navigation = (props) => {
   return (
     <div
       id="myTable"
-      className="jumbotron-fluid p-5"
+      className="jumbotron-fluid p-5 text-center"
       style={{
         paddingBottom: "0px",
         backgroundImage: `url(${Background})`,
@@ -28,9 +22,9 @@ const Navigation = (props) => {
             className="btn btn-outline-light"
             onClick={() => props.handleNavigationClick("askLibrarian")}
           >
-            <AiFillAudio size="100px" />
+            <MdFeedback size="100px" />
           </button>
-          <p className="h2 pt-4 mb-4">Ask a Librarin</p>
+          <p className="h2 pt-4 mb-4">Feedbacks</p>
         </div>
         <div className="col-sm-4">
           <button

@@ -70,7 +70,7 @@ const CardStatus = (props) => {
     let innerDiv = [];
     for (let i = 0; i < bookData.length; i++) {
       innerDiv.push(
-        <div className={`p-2 col-md-6`}>
+        <div key={i} className={`p-2 col-md-6`}>
           <div className="d-inline-block">
             <LibraryCard
               cardNumber={bookData[i].cardNumber}
@@ -87,7 +87,7 @@ const CardStatus = (props) => {
       );
       if (i % 2 == 1) {
         outerDiv.push(
-          <div className="row" style={{ margin: "0px" }}>
+          <div key={i} className="row" style={{ margin: "0px" }}>
             {innerDiv}
           </div>
         );

@@ -5,22 +5,16 @@ import Footer from "views/Components/Footer/Footer";
 
 //Sections
 import Carousel from "./Sections/Carousel/Carousel";
-import TrendingBooksSection from "./Sections/Books/TrendingBooksSection";
 import Navigation from "./Sections/Navigation/Navigation";
+import AskALibrarian from "./Sections/AskALibrarian/AskALibrarian";
 
 //CSS
 import "./Sections/Style/landingPageStyle.css";
-
-//Icons
-import { FaBook } from "react-icons/fa";
 
 //Images
 import Slide1 from "assets/img/slideshow/slide4.1.jpg";
 import Slide2 from "assets/img/slideshow/slide5.1.jpg";
 import Slide3 from "assets/img/slideshow/slide6.1.jpg";
-
-//Database
-import trendingBooks from "views/virtualDB/books/trendingBooks";
 
 const LandingPage = (props) => {
   const slideData = [
@@ -50,51 +44,65 @@ const LandingPage = (props) => {
     },
   ];
 
+  const [showAskLibrarian, setShowAskALibrarian] = React.useState(false);
+
+  const hideAskALibrarian = () => {
+    setShowAskALibrarian(false);
+  };
+
   const handleNavigationButtonClick = (buttonName) => {
-    if ("askLibrarian".localeCompare(buttonName) === 0) {
-      props.history.push({
-        pathname: "/ask",
-      });
-    }
-    if ("timing".localeCompare(buttonName) === 0) {
+    if ("askLibrarian" === buttonName) {
+      setShowAskALibrarian(true);
+    } else if ("timing" === buttonName) {
       props.history.push({
         pathname: "/about",
         search: buttonName,
+        state: true,
       });
-    }
-    if ("services".localeCompare(buttonName) === 0) {
+    } else if ("services" === buttonName) {
       props.history.push({
         pathname: "/services",
-        search: buttonName,
+        state: true,
       });
     }
   };
 
   return (
     <div>
-      <Navbar {...props} />
-      <div style={{ marginTop: "0px" }}>
-        <Carousel slideData={slideData} />
-        <div className="jumbotron bg-light text-center jumbo">
-          <Typist cursor={{ show: false }}>
-            <h1
-              className="text-danger"
-              style={{
-                fontSize: "7vw",
-                textShadow: "0.2vw 0.2vw 0.2vw #00203f",
-              }}
-            >
-              Welcome to the Library
-            </h1>
-          </Typist>
-          <p className="text-muted" style={{ fontSize: "20px" }}>
-            Welcome to Jadavpur University Library
-          </p>
+      <Navbar {...props} user={props.user} logOut={props.logOut} />
+      {showAskLibrarian ? (
+        <AskALibrarian goBack={hideAskALibrarian} />
+      ) : (
+        <div style={{ marginTop: "0px" }}>
+          <Carousel slideData={slideData} />
+          <div className="jumbotron bg-light text-center jumbo">
+            <Typist cursor={{ show: false }}>
+              <h1
+                className="text-danger"
+                style={{
+                  fontSize: "7vw",
+                  textShadow: "0.2vw 0.2vw 0.2vw #00203f",
+                }}
+              >
+                Welcome to the Library
+              </h1>
+            </Typist>
+            <p className="text-muted" style={{ fontSize: "20px" }}>
+              Welcome to Jadavpur University Library
+            </p>
+          </div>
+          <Navigation handleNavigationClick={handleNavigationButtonClick} />
+          <div className="py-5 px-4">
+            <p className="h1 text-center pt-5 pb-2 text-danger">
+              We have a huge book collection
+            </p>
+            <p className="h6 text-muted pb-5 pt-2 text-center">
+              we have several categories such as magazines, story, novel etc.
+              you can find online book pdf and can download it.
+            </p>
+          </div>
         </div>
-        <Navigation handleNavigationClick={handleNavigationButtonClick} />
-        <hr className="hr-text py-5" data-content="Trending Books" />
-        <TrendingBooksSection trendingBooks={trendingBooks} {...props} />
-      </div>
+      )}
       <Footer />
     </div>
   );

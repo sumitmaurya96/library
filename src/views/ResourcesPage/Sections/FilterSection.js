@@ -1,10 +1,71 @@
 import React from "react";
 
-//Icons
-import { MdSearch } from "react-icons/md";
-
 const FilterSection = (props) => {
-  const [views, setViews] = React.useState({ showFilters: false });
+  const initialFilter = {
+    contentType: {
+      all: true,
+      magazine: false,
+      journal: false,
+      departmental: false,
+      story: false,
+    },
+    discipline: {
+      all: true,
+      it: false,
+      instru: false,
+      printing: false,
+      power: false,
+      construction: false,
+    },
+    language: {
+      all: true,
+      hindi: false,
+      english: false,
+      bengla: false,
+    },
+  };
+
+  const [views, setViews] = React.useState({
+    showFilters: false,
+    filters: initialFilter,
+  });
+
+  const onInputChange = (field, subField, value) => {
+    console.log(value);
+
+    setViews((state) => {
+      const Views = { ...state };
+
+      for (const prop in Views.filters[field]) {
+        Views.filters[field][prop] = false;
+      }
+
+      Views.filters[field][subField] = value;
+      return Views;
+    });
+  };
+
+  const getFilterLabel = (field) => {
+    for (const prop in views.filters[field]) {
+      if (views.filters[field][prop] === true) {
+        return prop;
+      }
+    }
+  };
+
+  const handleFilterSubmitAction = (args) => {
+    setViews((state) => {
+      const Views = { ...state };
+      if (args === "reset") {
+        Views.filters = initialFilter;
+      }
+      Views.showFilters = false;
+      return Views;
+    });
+
+    props.getFilters(views.filters);
+  };
+
   return (
     <div
       className="px-4 pb-4"
@@ -25,13 +86,19 @@ const FilterSection = (props) => {
         </button>
         <span className="text-muted" style={{ fontSize: "12px" }}>
           <span className="px-2">
-            Content Type: <span className="text-danger"> All</span>
+            Content Type:{" "}
+            <span className="text-danger">
+              {" "}
+              {getFilterLabel("contentType")}
+            </span>
           </span>
           <span className="px-2">
-            Discipline: <span className="text-danger"> All</span>
+            Discipline:{" "}
+            <span className="text-danger"> {getFilterLabel("discipline")}</span>
           </span>
           <span className="px-2">
-            Language: <span className="text-danger"> All</span>
+            Language:{" "}
+            <span className="text-danger"> {getFilterLabel("language")}</span>
           </span>
         </span>
       </div>
@@ -47,23 +114,74 @@ const FilterSection = (props) => {
               </div>
               <div className="border border-secondary p-2 text-muted rounded">
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" checked />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange("contentType", "all", event.target.checked)
+                    }
+                    checked={views.filters.contentType.all}
+                  />
                   <span className="px-2">All</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange(
+                        "contentType",
+                        "magazine",
+                        event.target.checked
+                      )
+                    }
+                    checked={views.filters.contentType.magazine}
+                  />
                   <span className="px-2">Magazine</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange(
+                        "contentType",
+                        "journal",
+                        event.target.checked
+                      )
+                    }
+                    checked={views.filters.contentType.journal}
+                  />
                   <span className="px-2">Journal</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange(
+                        "contentType",
+                        "departmental",
+                        event.target.checked
+                      )
+                    }
+                    checked={views.filters.contentType.departmental}
+                  />
                   <span className="px-2">Departmental</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange(
+                        "contentType",
+                        "story",
+                        event.target.checked
+                      )
+                    }
+                    checked={views.filters.contentType.story}
+                  />
                   <span className="px-2">Story</span>
                 </div>
               </div>
@@ -77,27 +195,81 @@ const FilterSection = (props) => {
               </div>
               <div className="border border-secondary p-2 text-muted rounded">
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" checked />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange("discipline", "all", event.target.checked)
+                    }
+                    checked={views.filters.discipline.all}
+                  />
                   <span className="px-2">All</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange("discipline", "it", event.target.checked)
+                    }
+                    checked={views.filters.discipline.it}
+                  />
                   <span className="px-2">Information Technology</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange(
+                        "discipline",
+                        "instru",
+                        event.target.checked
+                      )
+                    }
+                    checked={views.filters.discipline.instru}
+                  />
                   <span className="px-2">Instrumentation</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange(
+                        "discipline",
+                        "printing",
+                        event.target.checked
+                      )
+                    }
+                    checked={views.filters.discipline.printing}
+                  />
                   <span className="px-2">Printing</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange("discipline", "power", event.target.checked)
+                    }
+                    checked={views.filters.discipline.power}
+                  />
                   <span className="px-2">Power</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange(
+                        "discipline",
+                        "construction",
+                        event.target.checked
+                      )
+                    }
+                    checked={views.filters.discipline.construction}
+                  />
                   <span className="px-2">Construction</span>
                 </div>
               </div>
@@ -111,57 +283,69 @@ const FilterSection = (props) => {
               </div>
               <div className="border border-secondary p-2 text-muted rounded">
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" checked />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange("language", "all", event.target.checked)
+                    }
+                    checked={views.filters.language.all}
+                  />
                   <span className="px-2">All</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange("language", "english", event.target.checked)
+                    }
+                    checked={views.filters.language.english}
+                  />
                   <span className="px-2">English</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange("language", "bengla", event.target.checked)
+                    }
+                    checked={views.filters.language.bengla}
+                  />
                   <span className="px-2">Bengla</span>
                 </div>
                 <div className="">
-                  <input type="checkbox" className="bg-dark ckeckbox" />
-                  <span className="px-2">English</span>
+                  <input
+                    type="checkbox"
+                    className="bg-dark ckeckbox"
+                    onChange={(event) =>
+                      onInputChange("language", "hindi", event.target.checked)
+                    }
+                    checked={views.filters.language.hindi}
+                  />
+                  <span className="px-2">Hindi</span>
                 </div>
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col-md-12 text-center">
-              <button className="btn btn-outline-danger mr-4">Save</button>
-              <button className="btn btn-outline-danger">Reset Filters</button>
-            </div>
-          </div>
-        </React.Fragment>
-      )}
-      {!views.showFilters && (
-        <div
-          style={{
-            maxWidth: "500px",
-            margin: "0px auto",
-            paddingTop: "18vh",
-            fontFamily: "serif",
-          }}
-        >
-          <p className="h1 text-danger text-center">Library Search</p>
-          <div className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search"
-              aria-label="Search"
-              aria-describedby="basic-addon2"
-            />
-            <div className="input-group-append">
-              <button className="btn btn-outline-danger" type="button">
-                <MdSearch />
+              <button
+                className="btn btn-outline-danger mr-4"
+                onClick={() => handleFilterSubmitAction("okay")}
+              >
+                Okay
+              </button>
+              <button
+                className="btn btn-outline-danger"
+                onClick={() => handleFilterSubmitAction("reset")}
+              >
+                Reset
               </button>
             </div>
           </div>
-        </div>
+        </React.Fragment>
       )}
     </div>
   );

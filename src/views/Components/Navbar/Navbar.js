@@ -8,6 +8,9 @@ import { MdPersonAdd } from "react-icons/md";
 //Logo
 import Logo from "assets/img/app/ju.png";
 
+//Role
+import { student, faculty } from "Helpers/Roles";
+
 //Profile
 import ProfileIcon from "assets/img/faces/kendall.jpg";
 
@@ -15,6 +18,9 @@ import ProfileIcon from "assets/img/faces/kendall.jpg";
 import "./Style/navbarStyle.css";
 
 const Navbar = (props) => {
+  const { loggedIn, userData } = props.user;
+  const { role, profilePicUrl } = userData;
+
   const navbar = {
     color: {
       transparent: "rgb(60, 61, 65,0.5)",
@@ -25,7 +31,6 @@ const Navbar = (props) => {
   const [classes, setClasses] = React.useState({
     collapse: "collapse",
     showInput: false,
-    loggedIn: true,
     dropdownDisplay: "none",
     navbarBackground: navbar.color.transparent,
     NavLinks: {
@@ -70,7 +75,6 @@ const Navbar = (props) => {
   };
 
   const scrollHandler = (event) => {
-    // console.log(Math.floor(window.pageYOffset));
     if (Math.floor(window.pageYOffset) > 200) {
       setClasses((prevState) => {
         const Classes = { ...prevState };
@@ -85,8 +89,6 @@ const Navbar = (props) => {
       });
     }
 
-    //console.log(classes.navbarBackground);
-
     if (Math.floor(window.pageYOffset) <= 200) {
       setClasses((prevState) => {
         const Classes = { ...prevState };
@@ -97,6 +99,14 @@ const Navbar = (props) => {
           return prevState;
         }
       });
+    }
+  };
+
+  const handleDropDownClick = (button) => {
+    if (button === "logout") {
+      localStorage.removeItem("_id");
+      localStorage.removeItem("token");
+      props.logOut();
     }
   };
 
@@ -239,23 +249,24 @@ const Navbar = (props) => {
               className="nav-link"
               href="#"
               onClick={() => {
-                if (classes.loggedIn) props.history.push("/profile");
+                if (loggedIn) props.history.push("/profile");
                 else props.history.push("/login");
               }}
             >
-              {!classes.loggedIn && <MdPersonAdd size="40px" />}
-              {classes.loggedIn && (
+              {loggedIn ? (
                 <img
                   className="rounded-circle border border-light"
-                  src={ProfileIcon}
+                  src={`http://localhost:5000${profilePicUrl}`}
                   alt="name"
                   width="40px"
                   height="40px"
                 />
+              ) : (
+                <MdPersonAdd size="40px" />
               )}
             </a>
           </li>
-          {classes.loggedIn && (
+          {loggedIn && (
             <li className={`nav-item dropdown ${classes.NavLinks.home} `}>
               <a
                 className="nav-link"
@@ -273,20 +284,25 @@ const Navbar = (props) => {
                 className={`dropdown-menu dropdown-menu-right d-${classes.dropdownDisplay}`}
                 aria-labelledby="navbarDropdown"
               >
-                <a className="dropdown-item" href="#">
-                  Action
-                </a>
+                {(role === student || role === faculty) && (
+                  <React.Fragment>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => {
+                        props.history.push("/card-status");
+                      }}
+                    >
+                      {role === student ? "Card Status" : "Orders"}
+                    </a>
+                    <div className="dropdown-divider"></div>
+                  </React.Fragment>
+                )}
                 <a
                   className="dropdown-item"
                   href="#"
-                  onClick={() => {
-                    props.history.push("/card-status");
-                  }}
+                  onClick={() => handleDropDownClick("logout")}
                 >
-                  Card Status
-                </a>
-                <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="#">
                   LogOut
                 </a>
               </div>

@@ -1,16 +1,19 @@
 import React from "react";
+import axios from "axios";
 import Navbar from "views/Components/Navbar/Navbar";
 import Footer from "views/Components/Footer/Footer";
 import Pagination from "./Sections/Pagination";
 import ManageNoticeSection from "./Sections/ManageNoticeSection";
 import { GoPlus } from "react-icons/go";
 
+//Role
+import { admin, librarian, student, faculty } from "Helpers/Roles";
+
 const NoticePage = (props) => {
-  const type = {
-    student: "student",
-    faculty: "faculty",
-    librarian: "librarian",
-  };
+  const pageSize = 20;
+  const apiURL = "http://localhost:5000";
+
+  const { role } = props.user.userData;
 
   //true if new notice is to be added, false if notice to be edited
   const [dataToBeEdited, setDataToBeEdited] = React.useState({
@@ -19,73 +22,12 @@ const NoticePage = (props) => {
   });
 
   const [showNewNoticePage, setShowNewNoticePage] = React.useState(false);
-  const [user, setUser] = React.useState({
-    userType: type.librarian,
-  });
 
-  const [notice, setNotice] = React.useState({
-    currentPage: 1,
+  const [notices, setNotices] = React.useState({
     totalPages: 1,
+    pageNumber: 1,
+    data: [],
   });
-
-  const [tableData, setTableData] = React.useState([
-    {
-      id: "notice1",
-      details: "National Legal Services Authority",
-      title: "Legal Services",
-      link: "https://nalsa.gov.in/",
-      is_downloadable: false,
-    },
-    {
-      id: "notice2",
-      details: "ओपन हाउस की बैठक का पुनर्निर्धारण",
-      title: "Legal Services",
-      link: "https://nalsa.gov.in/",
-      is_downloadable: true,
-    },
-    {
-      id: "notice3",
-      details: "National Legal Services Authority",
-      title: "Legal Services",
-      link: "https://nalsa.gov.in/",
-      is_downloadable: false,
-    },
-    {
-      id: "notice4",
-      details: "National Legal Services Authority",
-      title: "Legal Services",
-      link: "https://nalsa.gov.in/",
-      is_downloadable: false,
-    },
-    {
-      id: "notice5",
-      details: "National Legal Services Authority",
-      title: "Legal Services",
-      link: "https://nalsa.gov.in/",
-      is_downloadable: true,
-    },
-    {
-      id: "notice6",
-      details: "National Legal Services Authority",
-      title: "Legal Services",
-      link: "https://nalsa.gov.in/",
-      is_downloadable: false,
-    },
-    {
-      id: "notice7",
-      details: "National Legal Services Authority",
-      title: "Legal Services",
-      link: "https://nalsa.gov.in/",
-      is_downloadable: false,
-    },
-    {
-      id: "notice8",
-      details: "National Legal Services Authority",
-      title: "Legal Services",
-      link: "https://nalsa.gov.in/",
-      is_downloadable: false,
-    },
-  ]);
 
   const toggleNewNoticePage = () => {
     setShowNewNoticePage((state) => {
@@ -93,39 +35,10 @@ const NoticePage = (props) => {
     });
   };
 
-  const manageNotice = (operation, data) => {
-    const TableData = [...tableData];
-    if (!data || !data.title || !data.id || !operation) {
-      return null;
-    }
-    //axios operations
-    if ("add".localeCompare(operation) === 0) {
-      TableData.unshift(data);
-      toggleNewNoticePage();
-    } else if (
-      "delete".localeCompare(operation) === 0 ||
-      "edit".localeCompare(operation) === 0
-    ) {
-      let index = -1;
-      for (index = 0; index < TableData.length; index++)
-        if (TableData[index].id.localeCompare(data.id) === 0) break;
-
-      if ("delete".localeCompare(operation) === 0) TableData.splice(index, 1);
-      else {
-        TableData.splice(index, 1, data);
-        //console.log(operation, data);
-        toggleNewNoticePage();
-      }
-    }
-
-    setTableData(TableData);
-    return 1;
-  };
-
   const setCurrentNoticePage = (pageNumber) => {
-    setNotice((state) => {
+    setNotices((state) => {
       const Notice = { ...state };
-      Notice.currentPage = pageNumber;
+      Notice.pageNumber = pageNumber;
       return Notice;
     });
   };
@@ -140,21 +53,136 @@ const NoticePage = (props) => {
     toggleNewNoticePage();
   };
 
-  React.useEffect(() => {
-    if (props.user && props.user.userType) {
-      setUser((prevState) => {
-        const User = { ...prevState };
-        User.userType = props.user.userType;
-        return User;
-      });
+  const manageNotice = (operation, data) => {
+    if (operation !== "add" && operation !== "edit" && operation !== "delete") {
+      return null;
     }
-  }, []);
+
+    if ("add" === operation) {
+      if (data && data.title && data.details) {
+        axios
+          .post(`${apiURL}/notices`, data, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((result) => {
+            console.log(result);
+            axios
+              .get(
+                `http://localhost:5000/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
+              )
+              .then((results) => {
+                console.log(results);
+                setNotices((state) => {
+                  const Notices = { ...state };
+                  Notices.totalPages = results.data.total;
+                  Notices.data = [...results.data.notices];
+                  return Notices;
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            toggleNewNoticePage();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        console.log("More Fields required");
+        return null;
+      }
+    } else if ("edit" === operation) {
+      axios
+        .patch(`${apiURL}/notices/${data._id}`, data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((result) => {
+          console.log(result);
+          axios
+            .get(
+              `http://localhost:5000/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
+            )
+            .then((results) => {
+              console.log(results);
+              setNotices((state) => {
+                const Notices = { ...state };
+                Notices.totalPages = results.data.total;
+                Notices.data = [...results.data.notices];
+                return Notices;
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+          toggleNewNoticePage();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if ("delete" === operation) {
+      console.log(data);
+
+      axios
+        .delete(`${apiURL}/notices/${data._id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((result) => {
+          console.log(result);
+          axios
+            .get(
+              `http://localhost:5000/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
+            )
+            .then((results) => {
+              console.log(results);
+              setNotices((state) => {
+                const Notices = { ...state };
+                Notices.totalPages = results.data.total;
+                Notices.data = [...results.data.notices];
+                return Notices;
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    return 1;
+  };
+
+  React.useEffect(() => {
+    axios
+      .get(
+        `http://localhost:5000/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
+      )
+      .then((results) => {
+        console.log(results);
+        setNotices((state) => {
+          const Notices = { ...state };
+          Notices.totalPages = results.data.total;
+          Notices.data = [...results.data.notices];
+          return Notices;
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [notices.pageNumber]);
 
   return (
     <div>
       <Navbar {...props} />
       <div style={{ paddingTop: "40px" }}>
-        {!showNewNoticePage && (
+        {!showNewNoticePage ? (
           <React.Fragment>
             <div className="jumbotron m-0 pb-2">
               <p className="h1 text-dander py-3 text-center">
@@ -172,16 +200,12 @@ const NoticePage = (props) => {
                     <th
                       scope="col"
                       style={{
-                        width: `${
-                          type.librarian.localeCompare(user.userType) === 0
-                            ? "28"
-                            : "33"
-                        }%`,
+                        width: `${role === librarian ? "28" : "33"}%`,
                       }}
                     >
                       Title
                     </th>
-                    {type.librarian.localeCompare(user.userType) === 0 && (
+                    {(role === librarian || role === admin) && (
                       <th scope="col" colSpan="2" style={{ width: "5%" }}>
                         Modify
                       </th>
@@ -189,10 +213,12 @@ const NoticePage = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {tableData.map((data, index) => {
+                  {notices.data.map((data, index) => {
                     return (
                       <tr key={index}>
-                        <th scope="row">{index + 1}</th>
+                        <th scope="row">
+                          {index + 1 + pageSize * (notices.pageNumber - 1)}
+                        </th>
                         <td>{data.details}</td>
                         <td>
                           {data.link ? (
@@ -207,7 +233,7 @@ const NoticePage = (props) => {
                             <p className="">{data.title}</p>
                           )}
                         </td>
-                        {type.librarian.localeCompare(user.userType) === 0 && (
+                        {(role === librarian || role === admin) && (
                           <React.Fragment>
                             <td>
                               <button
@@ -226,7 +252,7 @@ const NoticePage = (props) => {
                                   manageNotice("delete", data);
                                 }}
                               >
-                                delete
+                                Delete
                               </button>
                             </td>
                           </React.Fragment>
@@ -236,7 +262,7 @@ const NoticePage = (props) => {
                   })}
                 </tbody>
               </table>
-              {type.librarian.localeCompare(user.userType) === 0 && (
+              {(role === librarian || role === admin) && (
                 <div className="text-center py-2">
                   <button
                     className="btn btn-md btn-info"
@@ -249,13 +275,12 @@ const NoticePage = (props) => {
               )}
             </div>
             <Pagination
-              currentPage={notice.currentPage}
-              totalPages={notice.totalPages}
+              currentPage={notices.pageNumber}
+              totalPages={Math.ceil(notices.totalPages / pageSize)}
               setCurrentPage={setCurrentNoticePage}
             />
           </React.Fragment>
-        )}
-        {showNewNoticePage && (
+        ) : (
           <div>
             <ManageNoticeSection
               dataToBeEdited={dataToBeEdited}

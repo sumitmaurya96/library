@@ -5,10 +5,6 @@ const Book = (props) => {
 
   const { title, authors, thumbnailUrl, edition } = bookDetails;
 
-  const deleteBook = (bookId) => {};
-
-  const updateBook = (bookId, updateOps) => {};
-
   return (
     <div
       className="m-2 p-1 w-100 rounded text-center"
@@ -45,15 +41,15 @@ const Book = (props) => {
             })
           )}
         </p>
-        {edition && <p className="text-muted h8">{edition}</p>}
+        {edition && <p className="text-muted h8">{edition} edition</p>}
         <button
           className="btn btn-sm btn-outline-danger"
-          onClick={() => {
-            props.onClick();
+          onClick={(event) => {
+            if (props && props.onClick) props.onClick(event);
           }}
           style={{ borderRadius: "20px" }}
         >
-          View Details
+          View
         </button>
       </div>
     </div>

@@ -1,5 +1,8 @@
 import React from "react";
-import Book from "./Book";
+import Book from "components/Book";
+
+//Icon
+import { MdArrowBack } from "react-icons/md";
 
 const Favourites = (props) => {
   const bookData = [
@@ -65,54 +68,35 @@ const Favourites = (props) => {
     },
   ];
 
-  const populateList = () => {
-    const outerDiv = [];
-    let innerDiv = [];
-    for (let i = 0; i < bookData.length; i++) {
-      innerDiv.push(
-        <div className={`p-2 d-flex col-md-6`}>
-          <div className="mx-auto">
-            <Book
-              cardNumber={bookData[i].cardNumber}
-              bookName={bookData[i].bookName}
-              author={bookData[i].author}
-              issueDate={bookData[i].issueDate}
-              submissionDate={bookData[i].submissionDate}
-              accNum={bookData[i].accNum}
-              classNum={bookData[i].classNum}
-              department={bookData[i].department}
-            />
-          </div>
-        </div>
-      );
-      if (i % 2 == 1) {
-        outerDiv.push(
-          <div className="row" style={{ margin: "0px" }}>
-            {innerDiv}
-          </div>
-        );
-        innerDiv = [];
-      }
-    }
-    if (innerDiv.length !== 0) {
-      outerDiv.push(
-        <div className="row" style={{ margin: "0px" }}>
-          {innerDiv}
-        </div>
-      );
-    }
-    return outerDiv;
-  };
-
   return (
     <div className="bg-inf pt-4">
-      <div className="text-center">
-        <p className="h2 text-muted">Favourites</p>
+      <div className="text-inline text-center" style={{ position: "relative" }}>
+        <a
+          style={{ position: "absolute", top: "10%", left: "1%" }}
+          className="text-info"
+          onClick={() => props.setFavouriteVisible(false)}
+        >
+          <MdArrowBack size="40px" />
+        </a>
+        <p className="h2 text-muted">Your favourites</p>
       </div>
-      <hr className="bg-info p-0" style={{ width: "70%" }} />
-      {populateList()}
-      <div className="py-4 text-center">
-        <button className="btn btn-sm btn-outline-success">Show More</button>
+      <hr className="bg-info p-0" />
+      <div>
+        {bookData.map((value, index) => {
+          return (
+            <Book
+              key={index}
+              cardNumber={value.cardNumber}
+              bookName={value.bookName}
+              author={value.author}
+              issueDate={value.issueDate}
+              submissionDate={value.submissionDate}
+              accNum={value.accNum}
+              classNum={value.classNum}
+              department={value.department}
+            />
+          );
+        })}
       </div>
     </div>
   );
