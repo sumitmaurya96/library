@@ -12,6 +12,8 @@ import Loading from "assets/img/loading/loading.gif";
 import Login from "./Sections/Login";
 
 const LoginPage = (props) => {
+  const { apiLink } = props;
+
   const [loading, setLoading] = React.useState(false);
   const [authFaild, setAuthFaild] = React.useState(false);
 
@@ -19,7 +21,7 @@ const LoginPage = (props) => {
     setLoading(true);
     console.log(formData);
     axios
-      .post("http://localhost:5000/users/login", {
+      .post(`${apiLink}/users/login`, {
         username: formData.username,
         password: formData.password,
       })
@@ -49,7 +51,12 @@ const LoginPage = (props) => {
     <React.Fragment>
       {!loading ? (
         <div>
-          <Navbar user={props.user} logOut={props.logOut} {...props} />
+          <Navbar
+            user={props.user}
+            logOut={props.logOut}
+            apiLink={props.apiLink}
+            {...props}
+          />
           <div
             className="px-4"
             style={{ minHeight: "80vh", paddingTop: "80px" }}

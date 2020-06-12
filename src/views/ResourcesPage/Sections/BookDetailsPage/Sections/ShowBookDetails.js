@@ -2,7 +2,7 @@ import React from "react";
 
 const BookDetails = (props) => {
   //console.log(props);
-  const { role, bookDetails } = props;
+  const { role, bookDetails, apiLink } = props;
   const {
     title,
     isbn,
@@ -32,7 +32,7 @@ const BookDetails = (props) => {
             <img
               className="p-3"
               style={{ width: "100%", height: "auto" }}
-              src={`http://localhost:5000/${thumbnailUrl}`}
+              src={`${apiLink}/${thumbnailUrl}`}
               alt={title}
             />
           </div>
@@ -174,7 +174,7 @@ const BookDetails = (props) => {
                 {ebookUrl ? (
                   <a
                     tagt="_blanck"
-                    href={`http://localhost:5000/${ebookUrl}`}
+                    href={`${apiLink}/${ebookUrl}`}
                     className="text-success"
                   >
                     Download

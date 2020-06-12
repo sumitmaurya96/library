@@ -13,7 +13,7 @@ import TeamSection from "./Sections/TeamSection";
 export default function AboutPage(props) {
   return (
     <div className="">
-      <Navbar {...props} />
+      <Navbar {...props} apiLink={props.apiLink} logOut={props.logOut} />
 
       <div
         className="text-center"

@@ -8,16 +8,11 @@ import { MdPersonAdd } from "react-icons/md";
 //Logo
 import Logo from "assets/img/app/ju.png";
 
-//Role
-import { student, faculty } from "Helpers/Roles";
-
-//Profile
-import ProfileIcon from "assets/img/faces/kendall.jpg";
-
 //Css
 import "./Style/navbarStyle.css";
 
 const Navbar = (props) => {
+  const { apiLink } = props;
   const { loggedIn, userData } = props.user;
   const { role, profilePicUrl } = userData;
 
@@ -256,7 +251,7 @@ const Navbar = (props) => {
               {loggedIn ? (
                 <img
                   className="rounded-circle border border-light"
-                  src={`http://localhost:5000${profilePicUrl}`}
+                  src={`${apiLink}${profilePicUrl}`}
                   alt="name"
                   width="40px"
                   height="40px"

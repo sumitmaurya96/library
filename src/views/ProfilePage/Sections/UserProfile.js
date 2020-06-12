@@ -4,6 +4,8 @@ import React from "react";
 import { student } from "Helpers/Roles";
 
 export default function ProfilePage(props) {
+  const { apiLink } = props;
+
   const {
     id,
     firstname,
@@ -25,7 +27,7 @@ export default function ProfilePage(props) {
           style={{ marginBottom: "0" }}
         >
           <img
-            src={`http://localhost:5000${profilePicUrl}`}
+            src={`${apiLink}${profilePicUrl}`}
             className="rounded-circle pt-2"
             width="140"
             height="140"

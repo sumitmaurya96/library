@@ -12,6 +12,7 @@ import { MdSearch } from "react-icons/md";
 import SearchResults from "./Sections/SearchResults";
 
 const SearchPage = (props) => {
+  const { apiLink, logOut } = props;
   const [search, setSearch] = React.useState({
     query: "",
     pageNumber: 1,
@@ -33,7 +34,7 @@ const SearchPage = (props) => {
   const onFormSubmit = () => {
     axios
       .get(
-        `http://localhost:5000/books/text-search/pageNumber=${search.pageNumber}&query=${search.query}`,
+        `${apiLink}/books/text-search/pageNumber=${search.pageNumber}&query=${search.query}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -58,7 +59,7 @@ const SearchPage = (props) => {
 
   return (
     <React.Fragment>
-      <Navbar {...props} />
+      <Navbar {...props} apiLink={apiLink} logOut={logOut} />
       {results.showSearchResults ? (
         <SearchResults
           {...props}

@@ -6,6 +6,7 @@ import { MdArrowBack } from "react-icons/md";
 
 const ManageUser = (props) => {
   const {
+    apiLink,
     editFlag = false,
     ownData = {},
     userData = {},
@@ -38,7 +39,7 @@ const ManageUser = (props) => {
 
   const handleSubmit = () => {
     console.log(newUserData);
-    Axios.post(`http://localhost:5000/users/add`, newUserData, {
+    Axios.post(`${apiLink}/users/add`, newUserData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

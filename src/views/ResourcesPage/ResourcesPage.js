@@ -18,6 +18,7 @@ import BookList from "./Sections/BookList";
 import { librarian, admin } from "Helpers/Roles";
 
 const ResourcesPage = (props) => {
+  const { apiLink } = props;
   const { role, favourites, _id } = props.user.userData;
   let filters;
   const pageSize = 20;
@@ -72,7 +73,7 @@ const ResourcesPage = (props) => {
   React.useEffect(() => {
     axios
       .get(
-        `http://localhost:5000/books/custom-search/pageSize=${pageSize}&pageNumber=${books.pageNumber}`,
+        `${apiLink}/books/custom-search/pageSize=${pageSize}&pageNumber=${books.pageNumber}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -104,13 +105,14 @@ const ResourcesPage = (props) => {
 
   return (
     <div>
-      <Navbar {...props} logOut={props.logOut} />
+      <Navbar {...props} logOut={props.logOut} apiLink={apiLink} />
       <div
         className="py-1 px-5"
         style={{ minHeight: "80vh", marginTop: "80px" }}
       >
         {bookDetails.visible ? (
           <BookDetailsPage
+            apiLink={apiLink}
             changeFlag={changeFlag}
             {...props}
             favourites={favourites}
@@ -123,6 +125,7 @@ const ResourcesPage = (props) => {
           <React.Fragment>
             {showNewBookPage ? (
               <AddNewBook
+                apiLink={apiLink}
                 changeFlag={changeFlag}
                 goBack={() => pageVisibility("addnewbook", null, false)}
               />

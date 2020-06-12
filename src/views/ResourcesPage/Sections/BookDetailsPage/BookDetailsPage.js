@@ -13,7 +13,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import { librarian, admin, student, faculty } from "Helpers/Roles";
 
 const BookDetailsPage = (props) => {
-  const { role, bookDetails, favourites, id } = props;
+  const { role, bookDetails, favourites, id, apiLink } = props;
   console.log(favourites);
 
   const [showEditBookDetails, setShowEditBookDetails] = React.useState(false);
@@ -46,7 +46,7 @@ const BookDetailsPage = (props) => {
     } else if ("delete" === args) {
       //use axios delete
       axios
-        .delete(`http://localhost:5000/books/${bookDetails._id}`, {
+        .delete(`${apiLink}/books/${bookDetails._id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -65,7 +65,7 @@ const BookDetailsPage = (props) => {
   const toggleLiked = () => {
     axios
       .patch(
-        `http://localhost:5000/users/favourites/delete=${liked}`,
+        `${apiLink}/users/favourites/delete=${liked}`,
         {
           bookId: bookDetails._id,
         },
@@ -89,6 +89,7 @@ const BookDetailsPage = (props) => {
     <React.Fragment>
       {showEditBookDetails ? (
         <EditBookDetails
+          apiLink={apiLink}
           changeFlag={() => props.changeFlag()}
           {...props}
           goBack={() => handleClick("edit")}
@@ -97,7 +98,12 @@ const BookDetailsPage = (props) => {
         />
       ) : (
         <React.Fragment>
-          <ShowBookDetails role={role} {...props} bookDetails={bookDetails} />
+          <ShowBookDetails
+            apiLink={apiLink}
+            role={role}
+            {...props}
+            bookDetails={bookDetails}
+          />
           {(role === librarian || role === admin) && (
             <div className="text-center p-2">
               <button

@@ -22,6 +22,7 @@ import UsersDetails from "./Pages/UsersDetails";
 import UserOrders from "./Pages/UserOrders";
 
 const ProfilePage = (props) => {
+  const { apiLink } = props;
   const { role, username } = props.user.userData;
 
   const { favourites, ...rest } = props.user.userData;
@@ -90,6 +91,7 @@ const ProfilePage = (props) => {
     if (views === navigationParams.addNew) {
       return (
         <ManageUser
+          apiLink={apiLink}
           ownData={rest}
           handleNavigationClick={handleNavigationClick}
         />
@@ -97,6 +99,7 @@ const ProfilePage = (props) => {
     } else if (views === navigationParams.favourites) {
       return (
         <Favourites
+          apiLink={apiLink}
           {...props}
           data={favouriteData.data}
           handleNavigationClick={() =>
@@ -107,6 +110,7 @@ const ProfilePage = (props) => {
     } else if (views === navigationParams.librarians) {
       return (
         <UsersDetails
+          apiLink={apiLink}
           userRole={librarian}
           data={users.librarian}
           fromPage={navigationParams.librarians}
@@ -117,6 +121,7 @@ const ProfilePage = (props) => {
     } else if (views === navigationParams.students) {
       return (
         <UsersDetails
+          apiLink={apiLink}
           userRole={student}
           data={users.student}
           fromPage={navigationParams.students}
@@ -127,6 +132,7 @@ const ProfilePage = (props) => {
     } else if (views === navigationParams.faculties) {
       return (
         <UsersDetails
+          apiLink={apiLink}
           userRole={faculty}
           data={users.faculty}
           fromPage={navigationParams.faculties}
@@ -154,7 +160,7 @@ const ProfilePage = (props) => {
    */
   const fetchUsers = () => {
     axios
-      .get("http://localhost:5000/users", {
+      .get(`${apiLink}/users`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -184,7 +190,7 @@ const ProfilePage = (props) => {
 
   const fetchOrders = () => {
     axios
-      .get(`http://localhost:5000/orders/`, {
+      .get(`${apiLink}/orders/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -209,7 +215,7 @@ const ProfilePage = (props) => {
 
   const fetchTransactions = () => {
     axios
-      .get(`http://localhost:5000/transactions/query/fromDate=24-08-2018`, {
+      .get(`${apiLink}/transactions/query/fromDate=24-08-2018`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -241,7 +247,7 @@ const ProfilePage = (props) => {
   React.useEffect(() => {
     if (role === student || role === faculty) {
       axios
-        .get(`http://localhost:5000/orders/${rest.username}`, {
+        .get(`${apiLink}/orders/${rest.username}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -273,7 +279,12 @@ const ProfilePage = (props) => {
 
   return (
     <React.Fragment>
-      <Navbar user={props.user} {...props} />
+      <Navbar
+        user={props.user}
+        apiLink={apiLink}
+        logOut={props.logOut}
+        {...props}
+      />
       <div
         style={{
           paddingTop: "80px",
@@ -286,7 +297,7 @@ const ProfilePage = (props) => {
           getPage()
         ) : (
           <React.Fragment>
-            <UserProfile userData={rest} />
+            <UserProfile userData={rest} apiLink={apiLink} />
             {role === admin ? (
               <AdminNavigation
                 adminNavigationParams={navigationParams}

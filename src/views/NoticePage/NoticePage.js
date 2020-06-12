@@ -10,8 +10,9 @@ import { GoPlus } from "react-icons/go";
 import { admin, librarian, student, faculty } from "Helpers/Roles";
 
 const NoticePage = (props) => {
+  const { apiLink } = props;
+
   const pageSize = 20;
-  const apiURL = "http://localhost:5000";
 
   const { role } = props.user.userData;
 
@@ -61,7 +62,7 @@ const NoticePage = (props) => {
     if ("add" === operation) {
       if (data && data.title && data.details) {
         axios
-          .post(`${apiURL}/notices`, data, {
+          .post(`${apiLink}/notices`, data, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -70,7 +71,7 @@ const NoticePage = (props) => {
             console.log(result);
             axios
               .get(
-                `http://localhost:5000/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
+                `${apiLink}/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
               )
               .then((results) => {
                 console.log(results);
@@ -95,7 +96,7 @@ const NoticePage = (props) => {
       }
     } else if ("edit" === operation) {
       axios
-        .patch(`${apiURL}/notices/${data._id}`, data, {
+        .patch(`${apiLink}/notices/${data._id}`, data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -104,7 +105,7 @@ const NoticePage = (props) => {
           console.log(result);
           axios
             .get(
-              `http://localhost:5000/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
+              `${apiLink}/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
             )
             .then((results) => {
               console.log(results);
@@ -127,7 +128,7 @@ const NoticePage = (props) => {
       console.log(data);
 
       axios
-        .delete(`${apiURL}/notices/${data._id}`, {
+        .delete(`${apiLink}/notices/${data._id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -136,7 +137,7 @@ const NoticePage = (props) => {
           console.log(result);
           axios
             .get(
-              `http://localhost:5000/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
+              `${apiLink}/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
             )
             .then((results) => {
               console.log(results);
@@ -162,7 +163,7 @@ const NoticePage = (props) => {
   React.useEffect(() => {
     axios
       .get(
-        `http://localhost:5000/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
+        `${apiLink}/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
       )
       .then((results) => {
         console.log(results);
@@ -180,7 +181,7 @@ const NoticePage = (props) => {
 
   return (
     <div>
-      <Navbar {...props} />
+      <Navbar {...props} apiLink={props.apiLink} logOut={props.logOut} />
       <div style={{ paddingTop: "40px" }}>
         {!showNewNoticePage ? (
           <React.Fragment>

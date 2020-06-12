@@ -13,7 +13,7 @@ import { FiLock } from "react-icons/fi";
 import { FaRegUser } from "react-icons/fa";
 
 //Roles
-import { student, librarian, admin, faculty } from "./roles";
+import { student, librarian, admin, faculty } from "Helpers/Roles";
 
 const LoginPage = (props) => {
   const { authFaild } = props;

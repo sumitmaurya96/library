@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 
 const EditBookDetails = (props) => {
+  const { apiLink } = props;
   const [bookDetails, setBookDetails] = React.useState({
     title: "",
     authors: "",
@@ -51,7 +52,7 @@ const EditBookDetails = (props) => {
     const token = localStorage.getItem("token");
 
     axios
-      .post("http://localhost:5000/books/", payload, {
+      .post(`${apiLink}/books/`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

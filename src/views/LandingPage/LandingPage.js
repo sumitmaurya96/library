@@ -17,6 +17,8 @@ import Slide2 from "assets/img/slideshow/slide5.1.jpg";
 import Slide3 from "assets/img/slideshow/slide6.1.jpg";
 
 const LandingPage = (props) => {
+  const { apiLink } = props;
+
   const slideData = [
     {
       index: 0,
@@ -69,9 +71,14 @@ const LandingPage = (props) => {
 
   return (
     <div>
-      <Navbar {...props} user={props.user} logOut={props.logOut} />
+      <Navbar
+        {...props}
+        user={props.user}
+        apiLink={apiLink}
+        logOut={props.logOut}
+      />
       {showAskLibrarian ? (
-        <AskALibrarian goBack={hideAskALibrarian} />
+        <AskALibrarian apiLink={apiLink} goBack={hideAskALibrarian} />
       ) : (
         <div style={{ marginTop: "0px" }}>
           <Carousel slideData={slideData} />

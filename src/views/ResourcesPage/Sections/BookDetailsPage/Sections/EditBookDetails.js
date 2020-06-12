@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 
 const EditBookDetails = (props) => {
+  const { apiLink } = props;
   const [bookDetails, setBookDetails] = React.useState({
     title: "",
     authors: "",
@@ -62,7 +63,7 @@ const EditBookDetails = (props) => {
     console.log(payload);
 
     axios
-      .patch(`http://localhost:5000/books/${props.bookDetails._id}`, payload, {
+      .patch(`${apiLink}/books/${props.bookDetails._id}`, payload, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

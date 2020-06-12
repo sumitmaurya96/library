@@ -6,7 +6,7 @@ import Footer from "views/Components/Footer/Footer";
 const ServicesPage = (props) => {
   return (
     <React.Fragment>
-      <Navbar {...props} />
+      <Navbar {...props} apiLink={props.apiLink} logOut={props.logOut} />
 
       <div
         style={{

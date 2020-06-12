@@ -8,7 +8,7 @@ import Book from "components/Book";
 import { MdArrowBack } from "react-icons/md";
 
 const Favourites = (props) => {
-  const { data, handleNavigationClick } = props;
+  const { data, handleNavigationClick, apiLink } = props;
 
   const [books, setBooks] = React.useState({
     data: [],
@@ -26,7 +26,7 @@ const Favourites = (props) => {
     const Books = { data: [] };
     data.map((value, index) => {
       axios
-        .get(`http://localhost:5000/books/${value.bookId}`)
+        .get(`${apiLink}/books/${value.bookId}`)
         .then((result) => {
           Books.data.push(result.data);
 

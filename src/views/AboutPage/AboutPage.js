@@ -7,6 +7,8 @@ import Footer from "views/Components/Footer/Footer";
 import backgroundTop from "assets/img/bg-about.jpg";
 
 const AboutPage = (props) => {
+  const { apiLink, logOut } = props;
+
   const timingSectionRef = React.createRef();
 
   React.useEffect(() => {
@@ -20,7 +22,7 @@ const AboutPage = (props) => {
 
   return (
     <div>
-      <Navbar {...props} />
+      <Navbar {...props} apiLink={apiLink} logOut={logOut} />
 
       <div
         className="w-100"

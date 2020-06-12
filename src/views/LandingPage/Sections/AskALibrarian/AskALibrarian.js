@@ -8,6 +8,7 @@ import ShowFeedbacks from "./Sections/ShowFeedbacks";
 import { MdArrowBack, MdPlusOne, MdFeedback } from "react-icons/md";
 
 const AskALibrarian = (props) => {
+  const { apiLink } = props;
   const [feedback, setFeedback] = React.useState({
     total: -1,
     pageNumber: 1,
@@ -20,7 +21,7 @@ const AskALibrarian = (props) => {
     console.log(input);
 
     axios
-      .post("http://localhost:5000/feedbacks", input)
+      .post(`${apiLink}/feedbacks`, input)
       .then((result) => {
         setShowNewFeedbackPage(false);
       })
@@ -32,7 +33,7 @@ const AskALibrarian = (props) => {
   React.useEffect(() => {
     axios
       .get(
-        `http://localhost:5000/feedbacks/library-feedbacks/pageNumber=${feedback.pageNumber}`
+        `${apiLink}/feedbacks/library-feedbacks/pageNumber=${feedback.pageNumber}`
       )
       .then((result) => {
         console.log(result);

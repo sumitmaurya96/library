@@ -12,11 +12,10 @@ const UsersDetails = (props) => {
     handleNavigationClick = () => {},
     handleFavouriteClick = () => {},
     userRole,
+    apiLink,
     fromPage,
     data = [],
   } = props;
-
-  const apiURL = "http://localhost:5000";
 
   const action = {
     delete: "delete",
@@ -35,7 +34,7 @@ const UsersDetails = (props) => {
       console.log(data);
 
       axios
-        .delete(`${apiURL}/users/${data._id}`, {
+        .delete(`${apiLink}/users/${data._id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

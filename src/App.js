@@ -24,6 +24,8 @@ import LoginPage from "views/LoginPage/LoginPage";
 import ProfilePage from "views/ProfilePage/ProfilePage";
 
 function App() {
+  const apiLInk = "https://ju-library-api.herokuapp.com";
+
   const initialUserState = {
     loggedIn: false,
     userData: {
@@ -84,49 +86,84 @@ function App() {
           exact
           path="/home"
           component={(props) => (
-            <LandingPage user={user} logOut={logUserOut} {...props} />
+            <LandingPage
+              user={user}
+              apiLInk={apiLInk}
+              logOut={logUserOut}
+              {...props}
+            />
           )}
         />
         <Route
           exact
           path="/about"
           component={(props) => (
-            <AboutPage user={user} logOut={logUserOut} {...props} />
+            <AboutPage
+              user={user}
+              apiLInk={apiLInk}
+              logOut={logUserOut}
+              {...props}
+            />
           )}
         />
         <Route
           exact
           path="/team"
           component={(props) => (
-            <TeamPage user={user} logOut={logUserOut} {...props} />
+            <TeamPage
+              user={user}
+              apiLInk={apiLInk}
+              logOut={logUserOut}
+              {...props}
+            />
           )}
         />
         <Route
           exact
           path="/resources"
           component={(props) => (
-            <ResourcesPage user={user} logOut={logUserOut} {...props} />
+            <ResourcesPage
+              user={user}
+              apiLInk={apiLInk}
+              logOut={logUserOut}
+              {...props}
+            />
           )}
         />
         <Route
           exact
           path="/search"
           component={(props) => (
-            <SearchPage user={user} logOut={logUserOut} {...props} />
+            <SearchPage
+              user={user}
+              apiLInk={apiLInk}
+              logOut={logUserOut}
+              {...props}
+            />
           )}
         />
         <Route
           exact
           path="/services"
           component={(props) => (
-            <ServicesPage user={user} logOut={logUserOut} {...props} />
+            <ServicesPage
+              user={user}
+              apiLInk={apiLInk}
+              logOut={logUserOut}
+              {...props}
+            />
           )}
         />
         <Route
           exact
           path="/notice"
           component={(props) => (
-            <NoticePage user={user} logOut={logUserOut} {...props} />
+            <NoticePage
+              user={user}
+              apiLInk={apiLInk}
+              logOut={logUserOut}
+              {...props}
+            />
           )}
         />
         <LoginRoute
@@ -136,6 +173,7 @@ function App() {
           component={(props) => (
             <LoginPage
               user={user}
+              apiLInk={apiLInk}
               setUser={setUserData}
               logOut={logUserOut}
               {...props}
@@ -147,7 +185,12 @@ function App() {
           loggedIn={user.loggedIn}
           path="/profile"
           component={(props) => (
-            <ProfilePage user={user} logOut={logUserOut} {...props} />
+            <ProfilePage
+              user={user}
+              apiLInk={apiLInk}
+              logOut={logUserOut}
+              {...props}
+            />
           )}
         />
         <Route
