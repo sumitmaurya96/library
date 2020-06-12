@@ -1,7 +1,7 @@
 import React from "react";
 
 const Book = (props) => {
-  const { bookDetails } = props;
+  const { bookDetails = {}, like = false } = props;
 
   const { title, authors, thumbnailUrl, edition } = bookDetails;
 

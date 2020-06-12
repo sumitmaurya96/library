@@ -18,7 +18,7 @@ import BookList from "./Sections/BookList";
 import { librarian, admin } from "Helpers/Roles";
 
 const ResourcesPage = (props) => {
-  const { role } = props.user.userData;
+  const { role, favourites, _id } = props.user.userData;
   let filters;
   const pageSize = 20;
 
@@ -113,7 +113,9 @@ const ResourcesPage = (props) => {
           <BookDetailsPage
             changeFlag={changeFlag}
             {...props}
+            favourites={favourites}
             role={role}
+            id={_id}
             bookDetails={bookDetails.data}
             goBack={() => pageVisibility("bookdetails", null, false)}
           />

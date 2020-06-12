@@ -284,20 +284,6 @@ const Navbar = (props) => {
                 className={`dropdown-menu dropdown-menu-right d-${classes.dropdownDisplay}`}
                 aria-labelledby="navbarDropdown"
               >
-                {(role === student || role === faculty) && (
-                  <React.Fragment>
-                    <a
-                      className="dropdown-item"
-                      href="#"
-                      onClick={() => {
-                        props.history.push("/card-status");
-                      }}
-                    >
-                      {role === student ? "Card Status" : "Orders"}
-                    </a>
-                    <div className="dropdown-divider"></div>
-                  </React.Fragment>
-                )}
                 <a
                   className="dropdown-item"
                   href="#"

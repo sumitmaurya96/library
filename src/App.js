@@ -15,7 +15,6 @@ import { LoginRoute } from "./Helpers/login.route";
 //Routes
 import LandingPage from "views/LandingPage/LandingPage";
 import AboutPage from "views/AboutPage/AboutPage";
-import CardStatusPage from "views/CardStatusPage/CardStatusPage";
 import TeamPage from "views/TeamPage/TeamPage";
 import ResourcesPage from "views/ResourcesPage/ResourcesPage";
 import SearchPage from "views/SearchPage/SearchPage";
@@ -93,13 +92,6 @@ function App() {
           path="/about"
           component={(props) => (
             <AboutPage user={user} logOut={logUserOut} {...props} />
-          )}
-        />
-        <Route
-          exact
-          path="/card-status"
-          component={(props) => (
-            <CardStatusPage user={user} logOut={logUserOut} {...props} />
           )}
         />
         <Route

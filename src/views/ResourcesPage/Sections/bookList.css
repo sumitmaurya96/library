@@ -1,5 +1,0 @@
-.grid::after {
-  content: "";
-  flex: auto;
-  flex-basis: 100px;
-}

@@ -6,45 +6,45 @@ import { librarian } from "Helpers/Roles";
 //Icons
 import { MdPlusOne } from "react-icons/md";
 
-const AdminNavigation = (props) => {
+const UserNavigation = (props) => {
   const { role } = props;
   const {
     totalFavourites,
     totalBorrowedBooks,
     totalDueAmount,
     totalTransactions,
-  } = props.adminNavigationData;
+    borrowLimit,
+  } = props.userNavigationData;
 
-  const { orders, transactions, favourites } = props.userNavigationParams;
+  const {
+    userOrder,
+    transactions,
+    favourites,
+    addNew,
+  } = props.userNavigationParams;
 
   return (
     <React.Fragment>
       {role === librarian ? (
         <React.Fragment>
-          <div className="row py-4 px-5" style={{ marginBottom: "0" }}>
+          <div
+            className="row py-4 px-5"
+            style={{
+              marginBottom: "0",
+              boxSizing: "border-box",
+              width: "100vw",
+            }}
+          >
             <div className="col-md-4 text-center">
               <p className="h3 text-muted">Orders</p>
               <button
                 className="btn btn-sm btn-outline-danger rounded-circle p-2"
                 style={{ width: "70px", height: "70px" }}
-                onClick={() => props.handleUserNavigationClick(orders)}
+                onClick={() => props.handleNavigationClick(userOrder)}
               >
                 <p className="h5">{totalBorrowedBooks}</p>
-                <p className="mt-n2" style={{ fontSize: "16px" }}>
+                <p className="mt-n2" style={{ fontSize: "12px" }}>
                   Orders
-                </p>
-              </button>
-            </div>
-            <div className="col-md-4 text-center">
-              <p className="h3 text-muted">Transactions</p>
-              <button
-                className="btn btn-sm btn-outline-danger rounded-circle p-2"
-                style={{ width: "70px", height: "70px" }}
-                onClick={() => props.handleUserNavigationClick(transactions)}
-              >
-                <p className="h5">{totalTransactions}</p>
-                <p className="mt-n2" style={{ fontSize: "16px" }}>
-                  Transactions
                 </p>
               </button>
             </div>
@@ -53,25 +53,32 @@ const AdminNavigation = (props) => {
               <button
                 className="btn btn-sm btn-outline-danger rounded-circle p-2"
                 style={{ width: "70px", height: "70px" }}
-                onClick={() => props.handleUserAddNewClick()}
+                onClick={() => props.handleNavigationClick(addNew)}
               >
-                <MdPlusOne />
+                <MdPlusOne size="20px" />
               </button>
             </div>
           </div>
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <div className="row py-4 px-5" style={{ marginBottom: "0" }}>
+          <div
+            className="row py-4 px-5"
+            style={{
+              marginBottom: "0",
+              boxSizing: "border-box",
+              width: "100vw",
+            }}
+          >
             <div className="col-md-4 text-center">
               <p className="h3 text-muted">Favourites</p>
               <button
                 className="btn btn-sm btn-outline-danger rounded-circle p-2"
                 style={{ width: "70px", height: "70px" }}
-                onClick={() => props.handleUserNavigationClick(favourites)}
+                onClick={() => props.handleNavigationClick(favourites)}
               >
                 <p className="h5">{totalFavourites}</p>
-                <p className="mt-n2" style={{ fontSize: "16px" }}>
+                <p className="mt-n2" style={{ fontSize: "12px" }}>
                   Books
                 </p>
               </button>
@@ -81,10 +88,10 @@ const AdminNavigation = (props) => {
               <button
                 className="btn btn-sm btn-outline-danger rounded-circle p-2"
                 style={{ width: "70px", height: "70px" }}
-                onClick={() => props.handleUserNavigationClick(orders)}
+                onClick={() => props.handleNavigationClick(userOrder)}
               >
                 <p className="h5">{totalBorrowedBooks}</p>
-                <p className="mt-n2" style={{ fontSize: "16px" }}>
+                <p className="mt-n2" style={{ fontSize: "12px" }}>
                   of {borrowLimit}
                 </p>
               </button>
@@ -94,10 +101,10 @@ const AdminNavigation = (props) => {
               <button
                 className="btn btn-sm btn-outline-danger rounded-circle p-2"
                 style={{ width: "70px", height: "70px" }}
-                onClick={() => props.handleUserNavigationClick(orders)}
+                onClick={() => props.handleNavigationClick(userOrder)}
               >
                 <p className="h5">{totalDueAmount}</p>
-                <p className="mt-n2" style={{ fontSize: "16px" }}>
+                <p className="mt-n2" style={{ fontSize: "12px" }}>
                   Rs
                 </p>
               </button>
@@ -109,4 +116,4 @@ const AdminNavigation = (props) => {
   );
 };
 
-export default AdminNavigation;
+export default UserNavigation;

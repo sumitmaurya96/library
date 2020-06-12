@@ -3,17 +3,30 @@ import axios from "axios";
 
 //Sections
 import ShowBookDetails from "./Sections/ShowBookDetails";
-
-//virtual database (will be removed)
 import EditBookDetails from "./Sections/EditBookDetails";
 
+//Icons
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { FiShoppingCart } from "react-icons/fi";
+
 //Role
-import { librarian, admin } from "Helpers/Roles";
+import { librarian, admin, student, faculty } from "Helpers/Roles";
 
 const BookDetailsPage = (props) => {
-  const { role, bookDetails } = props;
+  const { role, bookDetails, favourites, id } = props;
+  console.log(favourites);
 
   const [showEditBookDetails, setShowEditBookDetails] = React.useState(false);
+  const [liked, setLiked] = React.useState(() => {
+    let flag = false;
+    for (const fav of favourites) {
+      if (fav.bookId === bookDetails._id) {
+        flag = true;
+        break;
+      }
+    }
+    return flag;
+  });
 
   const saveEditedBookDetails = (data) => {
     console.log(data);
@@ -49,6 +62,29 @@ const BookDetailsPage = (props) => {
     }
   };
 
+  const toggleLiked = () => {
+    axios
+      .patch(
+        `http://localhost:5000/users/favourites/delete=${liked}`,
+        {
+          bookId: bookDetails._id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((result) => {
+        setLiked((state) => {
+          return !state;
+        });
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
   return (
     <React.Fragment>
       {showEditBookDetails ? (
@@ -75,6 +111,22 @@ const BookDetailsPage = (props) => {
                 onClick={() => handleClick("delete")}
               >
                 Delete Book
+              </button>
+            </div>
+          )}
+          {(role === student || role === faculty) && (
+            <div className="d-inline-block m-2">
+              <a
+                href="#"
+                className="h2 m-2 text-danger"
+                onClick={() => {
+                  toggleLiked();
+                }}
+              >
+                {liked ? <AiFillHeart /> : <AiOutlineHeart />}
+              </a>
+              <button className="btn btn-sm btn-outline-success m-2">
+                Add to cart <FiShoppingCart />
               </button>
             </div>
           )}

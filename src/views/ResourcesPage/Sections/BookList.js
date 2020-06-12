@@ -1,10 +1,7 @@
 import React from "react";
 
-//CSS
-//import "./bookList.css";
-
 // Componnet
-import Book from "./Book";
+import Book from "components/Book";
 
 const BookList = (props) => {
   const { data } = props;
