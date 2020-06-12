@@ -24,7 +24,7 @@ import LoginPage from "views/LoginPage/LoginPage";
 import ProfilePage from "views/ProfilePage/ProfilePage";
 
 function App() {
-  const apiLInk = "https://ju-library-api.herokuapp.com";
+  const apiLink = "https://ju-library-api.herokuapp.com";
 
   const initialUserState = {
     loggedIn: false,
@@ -48,7 +48,7 @@ function App() {
   const setUserData = (tokenArgs) => {
     const token = tokenArgs ? tokenArgs : localStorage.getItem("token");
     axios
-      .get("http://localhost:5000/users/yourself", {
+      .get(`${apiLink}/users/yourself`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,7 +88,7 @@ function App() {
           component={(props) => (
             <LandingPage
               user={user}
-              apiLInk={apiLInk}
+              apiLink={apiLink}
               logOut={logUserOut}
               {...props}
             />
@@ -100,7 +100,7 @@ function App() {
           component={(props) => (
             <AboutPage
               user={user}
-              apiLInk={apiLInk}
+              apiLink={apiLink}
               logOut={logUserOut}
               {...props}
             />
@@ -112,7 +112,7 @@ function App() {
           component={(props) => (
             <TeamPage
               user={user}
-              apiLInk={apiLInk}
+              apiLink={apiLink}
               logOut={logUserOut}
               {...props}
             />
@@ -124,7 +124,7 @@ function App() {
           component={(props) => (
             <ResourcesPage
               user={user}
-              apiLInk={apiLInk}
+              apiLink={apiLink}
               logOut={logUserOut}
               {...props}
             />
@@ -136,7 +136,7 @@ function App() {
           component={(props) => (
             <SearchPage
               user={user}
-              apiLInk={apiLInk}
+              apiLink={apiLink}
               logOut={logUserOut}
               {...props}
             />
@@ -148,7 +148,7 @@ function App() {
           component={(props) => (
             <ServicesPage
               user={user}
-              apiLInk={apiLInk}
+              apiLink={apiLink}
               logOut={logUserOut}
               {...props}
             />
@@ -160,7 +160,7 @@ function App() {
           component={(props) => (
             <NoticePage
               user={user}
-              apiLInk={apiLInk}
+              apiLink={apiLink}
               logOut={logUserOut}
               {...props}
             />
@@ -173,7 +173,7 @@ function App() {
           component={(props) => (
             <LoginPage
               user={user}
-              apiLInk={apiLInk}
+              apiLink={apiLink}
               setUser={setUserData}
               logOut={logUserOut}
               {...props}
@@ -187,7 +187,7 @@ function App() {
           component={(props) => (
             <ProfilePage
               user={user}
-              apiLInk={apiLInk}
+              apiLink={apiLink}
               logOut={logUserOut}
               {...props}
             />

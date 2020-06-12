@@ -1,7 +1,7 @@
 import React from "react";
 
 const Book = (props) => {
-  const { bookDetails = {}, like = false } = props;
+  const { bookDetails = {}, like = false, apiLink } = props;
 
   const { title, authors, thumbnailUrl, edition } = bookDetails;
 
@@ -15,7 +15,7 @@ const Book = (props) => {
     >
       <img
         className="rounded"
-        src={`http://localhost:5000/${thumbnailUrl}`}
+        src={`${apiLink}/${thumbnailUrl}`}
         alt={title}
         width="140px"
         height="auto"

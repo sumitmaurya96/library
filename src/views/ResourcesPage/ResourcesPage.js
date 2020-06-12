@@ -134,6 +134,7 @@ const ResourcesPage = (props) => {
                 <FilterSection getFilters={getFilters} />
                 <BookList
                   {...props}
+                  apiLink={apiLink}
                   data={books.data}
                   bookDetailsVisible={(bookData) => {
                     pageVisibility("bookdetails", bookData, true);

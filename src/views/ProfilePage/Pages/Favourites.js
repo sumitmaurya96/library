@@ -45,7 +45,11 @@ const Favourites = (props) => {
     books.data.map((value, index) => {
       col.push(
         <div key={index} className="col-md-3">
-          <Book bookDetails={value} onClick={() => onButtonClick(value)} />
+          <Book
+            apiLink={apiLink}
+            bookDetails={value}
+            onClick={() => onButtonClick(value)}
+          />
         </div>
       );
 

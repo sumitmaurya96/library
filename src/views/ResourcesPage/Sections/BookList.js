@@ -18,6 +18,7 @@ const BookList = (props) => {
       col.push(
         <div key={index} className="col-md-3">
           <Book
+            apiLink={props.apiLink}
             key={index}
             bookDetails={value.book}
             onClick={() => onButtonClick(value.book)}
