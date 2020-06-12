@@ -6,8 +6,8 @@ import Book from "components/Book";
 //Icons
 import { MdSearch } from "react-icons/md";
 
-const BookList = (props) => {
-  const { books, search } = props;
+const SearchResults = (props) => {
+  const { books, search, apiLinks } = props;
 
   const onButtonClick = (details) => {
     console.log(details);
@@ -26,6 +26,7 @@ const BookList = (props) => {
       col.push(
         <div key={index} className="col-md-3">
           <Book
+            apiLinks={apiLinks}
             key={index}
             bookDetails={value.book}
             onClick={() => onButtonClick(value.book)}
@@ -99,4 +100,4 @@ const BookList = (props) => {
   );
 };
 
-export default BookList;
+export default SearchResults;

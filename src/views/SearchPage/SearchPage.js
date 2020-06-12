@@ -62,6 +62,7 @@ const SearchPage = (props) => {
       <Navbar {...props} apiLink={apiLink} logOut={logOut} />
       {results.showSearchResults ? (
         <SearchResults
+          apiLink={apiLink}
           {...props}
           books={results.books}
           search={search}
