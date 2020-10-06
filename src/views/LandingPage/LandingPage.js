@@ -25,24 +25,21 @@ const LandingPage = (props) => {
       id: 1,
       src: Slide1,
       heading: "Jadavpur University Library",
-      subHeading:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      subHeading: "Books,Journals,Novels and much more.",
     },
     {
       index: 0,
       id: 2,
       src: Slide2,
       heading: "You can learn anything",
-      subHeading:
-        "There are many variations of passages of Lorem Ipsum available.",
+      subHeading: "Just a click away from knowledge.",
     },
     {
       index: 0,
       id: 3,
       src: Slide3,
       heading: "You have to know one thing",
-      subHeading:
-        "But I must explain to you how all this mistaken idea of denouncing pleasure.",
+      subHeading: "Books are a uniquely portable magic.",
     },
   ];
 
@@ -104,8 +101,8 @@ const LandingPage = (props) => {
               We have a huge book collection
             </p>
             <p className="h6 text-muted pb-5 pt-2 text-center">
-              we have several categories such as magazines, story, novel etc.
-              you can find online book pdf and can download it.
+              We have several categories such as magazines, story, novel etc.
+              you can find online book pdf and can download them too.
             </p>
           </div>
         </div>

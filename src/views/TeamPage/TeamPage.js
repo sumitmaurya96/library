@@ -68,7 +68,13 @@ export default function AboutPage(props) {
         <p className="h3 text-dark py-3">
           Find more information about faculties and staff of Jadavpur University
         </p>
-        <button className="btn btn-outline-danger btn-lg">Know More</button>
+        <a
+          className="btn btn-lg btn-danger"
+          href="http://www.jaduniv.edu.in/library.php"
+          target="_blank"
+        >
+          Know More
+        </a>
       </div>
       <Footer />
     </div>

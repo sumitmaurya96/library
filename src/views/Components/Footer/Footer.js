@@ -31,13 +31,19 @@ const Footer = (props) => {
             <h5>Get started</h5>
             <ul>
               <li>
-                <a href="#">Home</a>
+                <a href="http://www.jaduniv.edu.in/" target="_blank">
+                  Home
+                </a>
               </li>
               <li>
-                <a href="#">Login</a>
+                <a href="http://www.jaduniv.edu.in/" target="_blank">
+                  Login
+                </a>
               </li>
               <li>
-                <a href="#">Downloads</a>
+                <a href="http://www.jaduniv.edu.in/s" target="_blank">
+                  Downloads
+                </a>
               </li>
             </ul>
           </div>
@@ -45,10 +51,14 @@ const Footer = (props) => {
             <h5>About us</h5>
             <ul>
               <li>
-                <a href="#">Jadavpur University</a>
+                <a href="http://www.jaduniv.edu.in/" target="_blank">
+                  Jadavpur University
+                </a>
               </li>
               <li>
-                <a href="#">Contact us</a>
+                <a href="http://www.jaduniv.edu.in/" target="_blank">
+                  Contact us
+                </a>
               </li>
               <li>
                 <a href="#">Feedback</a>
@@ -59,10 +69,14 @@ const Footer = (props) => {
             <h5>Information</h5>
             <ul>
               <li>
-                <a href="#">JUMS</a>
+                <a href="http://www.jaduniv.edu.in/" target="_blank">
+                  JUMS
+                </a>
               </li>
               <li>
-                <a href="#">Notice</a>
+                <a href="http://www.jaduniv.edu.in/" target="_blank">
+                  Notice
+                </a>
               </li>
               {/* <li>
                 <a href="#">JU Library</a>
@@ -71,13 +85,25 @@ const Footer = (props) => {
           </div>
           <div className="col-md-3">
             <div className="social-networks">
-              <a href="#" className="twitter">
+              <a
+                href="http://www.jaduniv.edu.in/"
+                className="twitter"
+                target="_blank"
+              >
                 <TiSocialTwitter />
               </a>
-              <a href="#" className="facebook">
+              <a
+                href="http://www.jaduniv.edu.in/"
+                className="facebook"
+                target="_blank"
+              >
                 <TiSocialFacebook />
               </a>
-              <a href="#" className="google">
+              <a
+                href="http://www.jaduniv.edu.in/"
+                className="google"
+                target="_blank"
+              >
                 <TiSocialGooglePlus />
               </a>
             </div>

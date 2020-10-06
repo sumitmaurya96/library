@@ -45,7 +45,13 @@ const Carousel = (props) => {
           >
             <h1>{value.heading}</h1>
             <p>{value.subHeading}</p>
-            <button className="btn btn-lg btn-danger">Know More</button>
+            <a
+              className="btn btn-lg btn-danger"
+              href="http://www.jaduniv.edu.in/library.php"
+              target="_blank"
+            >
+              Know More
+            </a>
           </div>
         </div>
       );

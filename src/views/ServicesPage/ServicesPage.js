@@ -65,13 +65,13 @@ const ServicesPage = (props) => {
           </p>
 
           <div style={{ textAlign: "center" }}>
-            <button
-              className="btn btn-sm"
+            <a
+              className="btn btn-lg btn-danger"
+              href="http://www.jaduniv.edu.in/library.php"
               target="_blank"
-              href="http://www.jaduniv.edu.in/templates/newpages/library.html"
             >
-              Know more
-            </button>
+              Know More
+            </a>
           </div>
         </section>
       </div>

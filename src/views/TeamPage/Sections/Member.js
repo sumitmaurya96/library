@@ -22,12 +22,12 @@ const Book = (props) => {
         <p className="text-muted">{about}</p>
         <p className="text-muted">{phone}</p>
         <p className="text-muted">{email}</p>
-        <button
+        {/* <button
           className="btn btn-outline-danger"
           style={{ borderRadius: "20px" }}
         >
           View Profile
-        </button>
+        </button> */}
       </div>
     </div>
   );
