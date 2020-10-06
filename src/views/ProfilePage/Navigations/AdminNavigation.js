@@ -34,10 +34,7 @@ const AdminNavigation = (props) => {
 
   return (
     <React.Fragment>
-      <div
-        className="row py-4 px-5"
-        style={{ marginBottom: "0", boxSizing: "border-box", width: "100vw" }}
-      >
+      <div className="row py-4 px-5 m-0" style={{ margin: "auto" }}>
         <div className="col-md-4 text-center">
           <p className="h3 text-muted">Admins</p>
           <Popup
@@ -112,10 +109,7 @@ const AdminNavigation = (props) => {
           </button>
         </div>
       </div>
-      <div
-        className="row py-4 px-5"
-        style={{ marginBottom: "0", boxSizing: "border-box", width: "100vw" }}
-      >
+      <div className="row py-4 px-5 m-0" style={{ margin: "auto" }}>
         <div className="col-md-4 text-center">
           <p className="h3 text-muted">Students</p>
           <button
@@ -156,7 +150,7 @@ const AdminNavigation = (props) => {
           </button>
         </div>
       </div>
-      <div className="row py-4 px-5" style={{ marginBottom: "0" }}>
+      <div className="row py-4 px-5 mb-0" style={{ margin: "auto" }}>
         <div className="col-md-4 text-center">
           <p className="h3 text-muted">Add New User</p>
           <button

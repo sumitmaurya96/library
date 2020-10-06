@@ -5,7 +5,8 @@ const UserCard = (props) => {
     userData = {},
     onEditClick = () => {},
     onDeleteClick = () => {},
-    favouriteClicked,
+    favouriteClick = () => {},
+    apiLink,
   } = props;
 
   const {
@@ -26,7 +27,7 @@ const UserCard = (props) => {
       >
         <div className="col-lg-4 p-2 text-center">
           <img
-            src={`http://localhost:5000${profilePicUrl}`}
+            src={`${apiLink}${profilePicUrl}`}
             height="140"
             width="140"
             style={{ objectFit: "cover" }}
@@ -35,13 +36,13 @@ const UserCard = (props) => {
           <div className="d-inline-block pt-2">
             <button
               className="btn btn-sm btn-outline-warning mr-2"
-              onClick={onDeleteClick}
+              onClick={onEditClick}
             >
               Edit
             </button>
             <button
               className="btn btn-sm btn-outline-danger ml-2"
-              onClick={onEditClick}
+              onClick={onDeleteClick}
             >
               Delete
             </button>
@@ -57,9 +58,9 @@ const UserCard = (props) => {
               Favourites:{" "}
               <button
                 className="btn btn-sm btn-warning"
-                onClick={favouriteClicked}
+                onClick={favouriteClick}
               >
-                {favourites.length} Item{favourites.length > 1}
+                {favourites.length} Item{favourites.length > 1 ? "s" : ""}
               </button>
             </div>
           </div>

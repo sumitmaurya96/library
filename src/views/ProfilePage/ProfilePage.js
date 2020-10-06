@@ -20,6 +20,8 @@ import ManageUser from "./Pages/ManageUser";
 import Favourites from "./Pages/Favourites";
 import UsersDetails from "./Pages/UsersDetails";
 import UserOrders from "./Pages/UserOrders";
+import Orders from "./Pages/Orders";
+import ApproveOrder from "./Pages/ApproveOrder";
 
 const ProfilePage = (props) => {
   const { apiLink } = props;
@@ -37,6 +39,7 @@ const ProfilePage = (props) => {
     favourites: "favourites",
     transactions: "transactions",
     addNew: "addNew",
+    approveOrder: "approve",
   };
 
   const [views, setViews] = React.useState(null);
@@ -78,13 +81,14 @@ const ProfilePage = (props) => {
   };
 
   const handleFavouriteClick = (action, data, fromPage) => {
+    console.log(data);
     setFavouriteData((state) => {
       const FavouriteData = { ...state };
       FavouriteData.fromPage = fromPage;
       FavouriteData.data = data;
-      setViews(action);
       return FavouriteData;
     });
+    setViews("favourites");
   };
 
   const getPage = () => {
@@ -148,6 +152,22 @@ const ProfilePage = (props) => {
           fromPage={navigationParams.faculties}
           handleNavigationClick={handleNavigationClick}
           handleFavouriteClick={handleFavouriteClick}
+        />
+      );
+    } else if (views === navigationParams.orders) {
+      return (
+        <Orders
+          role={role}
+          orders={orders}
+          handleNavigationClick={handleNavigationClick}
+        />
+      );
+    } else if (views === navigationParams.approveOrder) {
+      return (
+        <ApproveOrder
+          role={role}
+          apiLink={apiLink}
+          handleNavigationClick={handleNavigationClick}
         />
       );
     } else {
@@ -238,7 +258,7 @@ const ProfilePage = (props) => {
     if (role === admin) {
       fetchUsers();
       fetchOrders();
-      fetchTransactions();
+      //fetchTransactions();
     } else if (role === librarian) {
       //fetchTransactions();
     }
@@ -288,8 +308,6 @@ const ProfilePage = (props) => {
       <div
         style={{
           paddingTop: "80px",
-          minHeight: "100vh",
-          width: "100vw",
           boxSizing: "border-box",
         }}
       >
@@ -320,6 +338,7 @@ const ProfilePage = (props) => {
                   totalDueAmount: userOrder.dueAmount,
                   totalTransactions: 0,
                   borrowLimit: userOrder.borrowLimit,
+                  orders: { orders },
                 }}
                 handleNavigationClick={handleNavigationClick}
               />

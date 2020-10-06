@@ -18,10 +18,7 @@ export default function ProfilePage(props) {
 
   return (
     <React.Fragment>
-      <div
-        className="row"
-        style={{ marginBottom: "0", boxSizing: "border-box", width: "100vw" }}
-      >
+      <div className="row" style={{ margin: "auto" }}>
         <div
           className="col-md-3 offset-md-2 text-center"
           style={{ marginBottom: "0" }}
@@ -43,7 +40,7 @@ export default function ProfilePage(props) {
           </div>
         </div>
       </div>
-      <div className="row py-5 px-2 bg-info">
+      <div className="row py-5 px-2 bg-info" style={{ margin: "auto" }}>
         <div className="col-md-4 text-center">
           <p className="h3 text-muted">Account</p>
         </div>

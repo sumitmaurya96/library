@@ -26,9 +26,10 @@ const UsersDetails = (props) => {
   const handleClick = (operation, data) => {
     if (action.edit === operation) {
       console.log("Edit Clicked");
-    }
-    if (action.favourite === operation) {
+    } else if (action.favourite === operation) {
       console.log("Favourite Clicked");
+      console.log(data);
+      console.log(fromPage);
       handleFavouriteClick(action.favourite, data, fromPage);
     } else if (action.delete === operation) {
       console.log(data);
@@ -56,9 +57,12 @@ const UsersDetails = (props) => {
       innerDiv.push(
         <div key={index} className="col-md-6">
           <UserCard
+            apiLink={apiLink}
             key={index}
             userData={user}
-            favouriteClick={() => handleClick(action.favourite, user.favourite)}
+            favouriteClick={() =>
+              handleClick(action.favourite, user.favourites)
+            }
             onEditClick={() => handleClick(action.edit, user)}
             onDeleteClick={() => handleClick(action.delete, user)}
           />

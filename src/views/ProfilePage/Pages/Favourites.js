@@ -9,6 +9,7 @@ import { MdArrowBack } from "react-icons/md";
 
 const Favourites = (props) => {
   const { data, handleNavigationClick, apiLink } = props;
+  console.log(data);
 
   const [books, setBooks] = React.useState({
     data: [],

@@ -7,7 +7,7 @@ import Book from "components/Book";
 import { MdSearch } from "react-icons/md";
 
 const SearchResults = (props) => {
-  const { books, search, apiLinks } = props;
+  const { books, search, apiLink } = props;
 
   const onButtonClick = (details) => {
     console.log(details);
@@ -26,7 +26,7 @@ const SearchResults = (props) => {
       col.push(
         <div key={index} className="col-md-3">
           <Book
-            apiLinks={apiLinks}
+            apiLink={apiLink}
             key={index}
             bookDetails={value.book}
             onClick={() => onButtonClick(value.book)}
@@ -49,40 +49,39 @@ const SearchResults = (props) => {
 
   return (
     <div className="py-5 px-4">
-      <div className="row m-0 py-5 px-4">
-        <div className="col-md-6 offset-md-3">
-          <form
-            className="input-group"
+      <div className="container pt-5 pb-3">
+        <form
+          className="input-group"
+          style={{
+            position: "relative",
+          }}
+          onSubmit={props.onFormSubmit}
+        >
+          <label className="h3 px-2 text-info">Library Search </label>
+          <input
+            type="text"
+            value={search.query}
+            onChange={(event) => props.onInputChange(event.target.value)}
+            className="form-control border-info rounded-0"
+            placeholder="Search"
+            aria-label="Search"
+            aria-describedby="basic-addon2"
+          />
+          <a
+            className="h4 text-info"
+            href="#"
+            type="submit"
             style={{
-              position: "relative",
+              position: "absolute",
+              top: "10%",
+              right: "2%",
+              zIndex: "10",
             }}
-            onSubmit={props.onFormSubmit}
+            onClick={props.onFormSubmit}
           >
-            <input
-              type="text"
-              value={search.query}
-              onChange={(event) => props.onInputChange(event.target.value)}
-              className="form-control border-info rounded-0"
-              placeholder="Search"
-              aria-label="Search"
-              aria-describedby="basic-addon2"
-            />
-            <a
-              className="h4 text-info"
-              href="#"
-              type="submit"
-              style={{
-                position: "absolute",
-                top: "10%",
-                right: "2%",
-                zIndex: "10",
-              }}
-              onClick={props.onFormSubmit}
-            >
-              <MdSearch />
-            </a>
-          </form>
-        </div>
+            <MdSearch />
+          </a>
+        </form>
       </div>
       <div className="container" style={{ minHeight: "60vh" }}>
         {books.length ? (
