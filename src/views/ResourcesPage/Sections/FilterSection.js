@@ -1,33 +1,11 @@
 import React from "react";
 
 const FilterSection = (props) => {
-  const initialFilter = {
-    contentType: {
-      all: true,
-      magazine: false,
-      journal: false,
-      departmental: false,
-      story: false,
-    },
-    discipline: {
-      all: true,
-      it: false,
-      instru: false,
-      printing: false,
-      power: false,
-      construction: false,
-    },
-    language: {
-      all: true,
-      hindi: false,
-      english: false,
-      bengla: false,
-    },
-  };
+  const { initialFilter, defaultFilter } = props;
 
   const [views, setViews] = React.useState({
     showFilters: false,
-    filters: initialFilter,
+    filters: defaultFilter,
   });
 
   const onInputChange = (field, subField, value) => {
@@ -63,7 +41,11 @@ const FilterSection = (props) => {
       return Views;
     });
 
-    props.getFilters(views.filters);
+    const viewsFilter = { ...views.filters };
+
+    const fil = args === "reset" ? initialFilter : viewsFilter;
+
+    props.setFilterHandler(fil);
   };
 
   return (

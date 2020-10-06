@@ -194,7 +194,7 @@ const LoginPage = (props) => {
                   )}
                 </div>
               </div>
-              <div className="py-1" style={{ height: "30px" }}>
+              {/* <div className="py-1" style={{ height: "30px" }}>
                 <a
                   className="float-right"
                   href="#"
@@ -202,7 +202,7 @@ const LoginPage = (props) => {
                 >
                   Forget password?
                 </a>
-              </div>
+              </div> */}
               <div className="text-center py-2">
                 <button
                   type="submit"

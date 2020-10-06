@@ -6,6 +6,9 @@ import Pagination from "./Sections/Pagination";
 import ManageNoticeSection from "./Sections/ManageNoticeSection";
 import { GoPlus } from "react-icons/go";
 
+//Image
+import Loading from "assets/img/loading/loading.gif";
+
 //Role
 import { admin, librarian, student, faculty } from "Helpers/Roles";
 
@@ -15,6 +18,8 @@ const NoticePage = (props) => {
   const pageSize = 20;
 
   const { role } = props.user.userData;
+
+  const [loading, setLoading] = React.useState(false);
 
   //true if new notice is to be added, false if notice to be edited
   const [dataToBeEdited, setDataToBeEdited] = React.useState({
@@ -59,6 +64,8 @@ const NoticePage = (props) => {
       return null;
     }
 
+    setLoading(true);
+
     if ("add" === operation) {
       if (data && data.title && data.details) {
         axios
@@ -79,6 +86,7 @@ const NoticePage = (props) => {
                   const Notices = { ...state };
                   Notices.totalPages = results.data.total;
                   Notices.data = [...results.data.notices];
+                  setLoading(false);
                   return Notices;
                 });
               })
@@ -113,6 +121,7 @@ const NoticePage = (props) => {
                 const Notices = { ...state };
                 Notices.totalPages = results.data.total;
                 Notices.data = [...results.data.notices];
+                setLoading(false);
                 return Notices;
               });
             })
@@ -145,6 +154,7 @@ const NoticePage = (props) => {
                 const Notices = { ...state };
                 Notices.totalPages = results.data.total;
                 Notices.data = [...results.data.notices];
+                setLoading(false);
                 return Notices;
               });
             })
@@ -161,6 +171,7 @@ const NoticePage = (props) => {
   };
 
   React.useEffect(() => {
+    setLoading(true);
     axios
       .get(
         `${apiLink}/notices/library-notices/dateDesc=true&pageNumber=${notices.pageNumber}&pageSize=${pageSize}`
@@ -171,6 +182,7 @@ const NoticePage = (props) => {
           const Notices = { ...state };
           Notices.totalPages = results.data.total;
           Notices.data = [...results.data.notices];
+          setLoading(false);
           return Notices;
         });
       })
@@ -182,130 +194,138 @@ const NoticePage = (props) => {
   return (
     <div>
       <Navbar {...props} apiLink={props.apiLink} logOut={props.logOut} />
-      <div style={{ paddingTop: "40px" }}>
-        {!showNewNoticePage ? (
-          <React.Fragment>
-            <div className="jumbotron m-0 pb-2">
-              <p className="h1 text-dander py-3 text-center">
-                Library Notice Board
-              </p>
-              <table className="table table-bordered table-striped">
-                <thead className="thead-dark">
-                  <tr>
-                    <th scope="col" style={{ width: "2%" }}>
-                      Sl. No.
-                    </th>
-                    <th scope="col" style={{ width: "65%" }}>
-                      Details
-                    </th>
-                    <th
-                      scope="col"
-                      style={{
-                        width: `${role === librarian ? "28" : "33"}%`,
-                      }}
-                    >
-                      Title
-                    </th>
-                    {(role === librarian || role === admin) && (
-                      <th scope="col" colSpan="2" style={{ width: "5%" }}>
-                        Modify
-                      </th>
-                    )}
-                  </tr>
-                </thead>
-                <tbody>
-                  {notices.data.map((data, index) => {
-                    return (
-                      <tr key={index}>
-                        <th scope="row">
-                          {index + 1 + pageSize * (notices.pageNumber - 1)}
-                        </th>
-                        <td>{data.details}</td>
-                        <td>
-                          {data.link ? (
-                            <a
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              href={`${data.link}`}
-                            >
-                              {data.is_downloadable ? "Download" : data.title}
-                            </a>
-                          ) : (
-                            <p className="">{data.title}</p>
-                          )}
-                        </td>
-                        {(role === librarian || role === admin) && (
-                          <React.Fragment>
-                            <td>
-                              <button
-                                className="btn btn-sm btn-outline-warning"
-                                onClick={() => {
-                                  editClicked(data);
-                                }}
-                              >
-                                Edit
-                              </button>
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-sm btn-outline-danger"
-                                onClick={() => {
-                                  manageNotice("delete", data);
-                                }}
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </React.Fragment>
-                        )}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              {(role === librarian || role === admin) && (
-                <div className="text-center py-2">
-                  <button
-                    className="btn btn-md btn-info"
-                    onClick={toggleNewNoticePage}
-                  >
-                    <GoPlus className="h5" />
-                    <span className="h5 pl-2">New Notice</span>
-                  </button>
-                </div>
-              )}
-            </div>
-            <Pagination
-              currentPage={notices.pageNumber}
-              totalPages={Math.ceil(notices.totalPages / pageSize)}
-              setCurrentPage={setCurrentNoticePage}
-            />
-          </React.Fragment>
-        ) : (
-          <div>
-            <ManageNoticeSection
-              dataToBeEdited={dataToBeEdited}
-              manageNotice={manageNotice}
-              cleanDataToBeEdited={() => {
-                setDataToBeEdited((state) => {
-                  const DataToBeEdited = { ...state };
-                  DataToBeEdited.flag = false;
-                  DataToBeEdited.data = null;
-                  return DataToBeEdited;
-                });
-              }}
-            />
-            <div className="text-center py-4 bg-light">
-              <button
-                className="btn btn-md btn-info"
-                onClick={toggleNewNoticePage}
-              >
-                Go Back
-              </button>
-            </div>
+      {loading ? (
+        <div className="d-flex" style={{ height: "100vh" }}>
+          <div className="align-self-center w-100 text-center">
+            <img width="64px" height="64px" src={Loading} />
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div style={{ paddingTop: "40px" }}>
+          {!showNewNoticePage ? (
+            <React.Fragment>
+              <div className="jumbotron m-0 pb-2">
+                <p className="h1 text-dander py-3 text-center">
+                  Library Notice Board
+                </p>
+                <table className="table table-bordered table-striped">
+                  <thead className="thead-dark">
+                    <tr>
+                      <th scope="col" style={{ width: "2%" }}>
+                        Sl. No.
+                      </th>
+                      <th scope="col" style={{ width: "65%" }}>
+                        Details
+                      </th>
+                      <th
+                        scope="col"
+                        style={{
+                          width: `${role === librarian ? "28" : "33"}%`,
+                        }}
+                      >
+                        Title
+                      </th>
+                      {(role === librarian || role === admin) && (
+                        <th scope="col" colSpan="2" style={{ width: "5%" }}>
+                          Modify
+                        </th>
+                      )}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {notices.data.map((data, index) => {
+                      return (
+                        <tr key={index}>
+                          <th scope="row">
+                            {index + 1 + pageSize * (notices.pageNumber - 1)}
+                          </th>
+                          <td>{data.details}</td>
+                          <td>
+                            {data.link ? (
+                              <a
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href={`${data.link}`}
+                              >
+                                {data.is_downloadable ? "Download" : data.title}
+                              </a>
+                            ) : (
+                              <p className="">{data.title}</p>
+                            )}
+                          </td>
+                          {(role === librarian || role === admin) && (
+                            <React.Fragment>
+                              <td>
+                                <button
+                                  className="btn btn-sm btn-outline-warning"
+                                  onClick={() => {
+                                    editClicked(data);
+                                  }}
+                                >
+                                  Edit
+                                </button>
+                              </td>
+                              <td>
+                                <button
+                                  className="btn btn-sm btn-outline-danger"
+                                  onClick={() => {
+                                    manageNotice("delete", data);
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </td>
+                            </React.Fragment>
+                          )}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                {(role === librarian || role === admin) && (
+                  <div className="text-center py-2">
+                    <button
+                      className="btn btn-md btn-info"
+                      onClick={toggleNewNoticePage}
+                    >
+                      <GoPlus className="h5" />
+                      <span className="h5 pl-2">New Notice</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+              <Pagination
+                currentPage={notices.pageNumber}
+                totalPages={Math.ceil(notices.totalPages / pageSize)}
+                setCurrentPage={setCurrentNoticePage}
+              />
+            </React.Fragment>
+          ) : (
+            <div>
+              <ManageNoticeSection
+                dataToBeEdited={dataToBeEdited}
+                manageNotice={manageNotice}
+                cleanDataToBeEdited={() => {
+                  setDataToBeEdited((state) => {
+                    const DataToBeEdited = { ...state };
+                    DataToBeEdited.flag = false;
+                    DataToBeEdited.data = null;
+                    return DataToBeEdited;
+                  });
+                }}
+              />
+              <div className="text-center py-4 bg-light">
+                <button
+                  className="btn btn-md btn-info"
+                  onClick={toggleNewNoticePage}
+                >
+                  Go Back
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
       <Footer />
     </div>
   );

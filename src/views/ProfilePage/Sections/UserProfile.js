@@ -30,9 +30,9 @@ export default function ProfilePage(props) {
             height="140"
           />
           <br />
-          <button className="m-2 btn btn-sm btn-outline-secondary">
+          {/* <button className="m-2 btn btn-sm btn-outline-secondary">
             Update Photo
-          </button>
+          </button> */}
         </div>
         <div className="d-inline-block col-md-6 d-flex">
           <div className="align-self-center mx-auto">
@@ -67,7 +67,7 @@ export default function ProfilePage(props) {
               </div>
             </div>
           </div>
-          <div className="row" style={{ margin: "0" }}>
+          {/* <div className="row" style={{ margin: "0" }}>
             <div className="col-md-12 d-flex">
               <div className="w-100">
                 <p className="d-inline">Password:</p>
@@ -78,7 +78,7 @@ export default function ProfilePage(props) {
                 </a>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </React.Fragment>

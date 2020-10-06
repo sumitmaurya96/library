@@ -24,7 +24,7 @@ import LoginPage from "views/LoginPage/LoginPage";
 import ProfilePage from "views/ProfilePage/ProfilePage";
 
 function App() {
-  const apiLink = "https://ju-library-api.herokuapp.com";
+  const apiLink = "http://localhost:5000"; //"https://ju-library-api.herokuapp.com";
 
   const initialUserState = {
     loggedIn: false,
